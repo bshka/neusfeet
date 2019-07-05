@@ -43,8 +43,8 @@ abstract class BaseFragment<VM : BaseActionsViewModel<*>, V : ViewMvc> : Fragmen
 
     override fun onStart() {
         super.onStart()
-        subscribeToViewModel(viewModel)
         subscribeToView(viewMvc)
+        subscribeToViewModel(viewModel)
         viewModel.start()
     }
 
