@@ -8,6 +8,9 @@ import com.google.gson.GsonBuilder
 import com.krendel.neusfeet.BuildConfig
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
+import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
+import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
+import com.krendel.neusfeet.screens.common.usecase.FetchTopHeadlinesUseCase
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
@@ -29,6 +32,8 @@ import java.util.concurrent.TimeUnit
 private val RETROFIT = StringQualifier("RETROFIT")
 
 val rxJava = module {
+
+    single { SchedulersProviderImpl() as SchedulersProvider }
 
     single(RETROFIT) {
         val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB
@@ -62,6 +67,12 @@ val rxJava = module {
 
 }
 
+val useCaseModule = module {
+
+    single { FetchTopHeadlinesUseCase(get(), get()) }
+
+}
+
 val viewModule = module {
 
     factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
@@ -82,6 +93,6 @@ val viewModelModule = module {
     // fragments
 
     // home fragment
-    viewModel { HomeFragmentViewModel() }
+    viewModel { HomeFragmentViewModel(get(), get()) }
 
 }

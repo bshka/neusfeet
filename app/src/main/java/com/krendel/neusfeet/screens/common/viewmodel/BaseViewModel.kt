@@ -1,5 +1,6 @@
 package com.krendel.neusfeet.screens.common.viewmodel
 
+import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import com.krendel.neusfeet.common.safetySubscribe
 import io.reactivex.Observable
@@ -11,12 +12,14 @@ abstract class BaseViewModel : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
+    @CallSuper
     open fun start() = Unit
 
     open fun resume() = Unit
 
     open fun pause() = Unit
 
+    @CallSuper
     open fun stop() = Unit
 
     override fun onCleared() {

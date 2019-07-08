@@ -8,6 +8,7 @@ import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewHomeBinding
 import com.krendel.neusfeet.model.Article
 import com.krendel.neusfeet.screens.common.list.ArticleItemViewModel
+import com.krendel.neusfeet.screens.common.list.RecyclerBindingAdapter
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 
@@ -21,6 +22,7 @@ class HomeViewMvc(
     val recyclerData = ObservableField<List<ArticleItemViewModel>>(emptyList())
 
     override fun bindViewModel(dataBinding: ViewHomeBinding) {
+        dataBinding.recyclerView.adapter = RecyclerBindingAdapter(listOf(), 1)
         dataBinding.viewModel = this
     }
 
