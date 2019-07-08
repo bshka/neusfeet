@@ -22,12 +22,26 @@ class HomeViewMvc(
     val recyclerData = ObservableField<List<ArticleItemViewModel>>(emptyList())
 
     override fun bindViewModel(dataBinding: ViewHomeBinding) {
-        dataBinding.recyclerView.adapter = RecyclerBindingAdapter(listOf(), 1)
         dataBinding.viewModel = this
     }
 
+    override fun create() {
+        super.create()
+        dataBinding.recyclerView.addItemDecoration(HomeItemsDecorator())
+        dataBinding.recyclerView.adapter = RecyclerBindingAdapter(listOf(), 1)
+        dataBinding.refreshLayout.isRefreshing = true
+        dataBinding.refreshLayout.setOnRefreshListener {
+            sendEvent(HomeViewActions.Reload)
+        }
+    }
+
     fun setArticles(articles: List<Article>) {
+        dataBinding.refreshLayout.isRefreshing = false
         recyclerData.set(getArticlesViewModels(articles))
+    }
+
+    fun lockPaging() {
+
     }
 
     private fun getArticlesViewModels(articles: List<Article>): List<ArticleItemViewModel> =
@@ -40,4 +54,5 @@ class HomeViewMvc(
 
 sealed class HomeViewActions : ViewMvcActions {
     data class ArticleClicked(val article: Article) : HomeViewActions()
+    object Reload: HomeViewActions()
 }

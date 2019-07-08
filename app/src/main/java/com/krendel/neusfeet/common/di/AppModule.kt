@@ -42,17 +42,17 @@ val rxJava = module {
 
         val logging = HttpLoggingInterceptor()
         logging.level = if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.NONE
-        } else {
             HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
         }
 
         val httpClient = OkHttpClient.Builder()
-            .addInterceptor(logging)
             .cache(cache)
             .addNetworkInterceptor(ApiInterceptor())
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(logging)
             .build()
 
         Retrofit.Builder()

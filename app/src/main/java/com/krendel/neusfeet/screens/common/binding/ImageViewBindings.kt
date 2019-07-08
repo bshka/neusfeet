@@ -9,7 +9,7 @@ object ImageViewBindings {
 
     @BindingAdapter("fitImageByUrl")
     @JvmStatic
-    fun fitAndCropFromResource(imageView: ImageView, url: String) {
+    fun fitAndCropFromResource(imageView: ImageView, url: String?) {
         Glide.with(imageView)
             .load(url)
             .fitAndCrop()

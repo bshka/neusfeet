@@ -22,7 +22,9 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
     override fun subscribeToViewModel(viewModel: HomeFragmentViewModel) {
         observe(viewModel.eventsObservable) {
             when (it) {
-                is HomeViewModelActions.ArticlesLoaded -> viewMvc.setArticles(it.articles)
+                is HomeViewModelActions.ArticlesLoaded -> {
+                    viewMvc.setArticles(it.articles)
+                }
             }
         }
     }
@@ -30,11 +32,12 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
     override fun subscribeToView(viewMvc: HomeViewMvc) {
         observe(viewMvc.eventsObservable) {
             when (it) {
-                is HomeViewActions.ArticleClicked -> Toast.makeText(
-                    context,
-                    "${it.article.title}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                is HomeViewActions.ArticleClicked -> {
+                    Toast.makeText(context, "${it.article.title}", Toast.LENGTH_SHORT).show()
+                }
+                is HomeViewActions.Reload -> {
+                    viewModel.reload()
+                }
             }
         }
     }
