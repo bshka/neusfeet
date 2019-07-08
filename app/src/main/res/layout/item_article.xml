@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.krendel.neusfeet.screens.common.list.ArticleItemViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:onClickListener="@{viewModel.onClick}"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                app:fitImageByUrl="@{viewModel.image}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sfui_medium"
+                android:text="@{viewModel.title}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:text="Quick Brown Fox Jumps Over" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/sfui_light"
+                android:text="@{viewModel.date}"
+                android:textColor="@color/french_gray"
+                android:textSize="14sp"
+                tools:text="16 MAY 2016" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/sfui_light"
+                android:lines="2"
+                android:text="@{viewModel.description}"
+                android:textColor="@color/manatee"
+                android:textSize="18sp"
+                tools:text="Synth polaroid bitters chillwave pickled. Vegan disrupt tousled, Portland keffiyeh aesthetic food" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

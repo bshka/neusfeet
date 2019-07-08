@@ -2,6 +2,7 @@ package com.krendel.neusfeet.screens.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import com.krendel.neusfeet.screens.common.BaseFragment
 import org.koin.android.ext.android.get
@@ -20,18 +21,20 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
 
     override fun subscribeToViewModel(viewModel: HomeFragmentViewModel) {
         observe(viewModel.eventsObservable) {
-            // TODO view model events
             when (it) {
-
+                is HomeViewModelActions.ArticlesLoaded -> viewMvc.setArticles(it.articles)
             }
         }
     }
 
     override fun subscribeToView(viewMvc: HomeViewMvc) {
         observe(viewMvc.eventsObservable) {
-            // TODO view events
             when (it) {
-
+                is HomeViewActions.ArticleClicked -> Toast.makeText(
+                    context,
+                    "${it.article.title}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

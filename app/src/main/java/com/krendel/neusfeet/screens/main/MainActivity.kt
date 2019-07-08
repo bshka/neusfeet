@@ -16,7 +16,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, MainViewMvc>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         lifecycleOwner: LifecycleOwner
-    ): MainViewMvc = get { parametersOf(inflater, container, lifecycleOwner) }
+    ): MainViewMvc = get { parametersOf(supportFragmentManager, inflater, container, lifecycleOwner) }
 
     override fun subscribeToView(viewMvc: MainViewMvc) {
         observe(viewMvc.eventsObservable) {

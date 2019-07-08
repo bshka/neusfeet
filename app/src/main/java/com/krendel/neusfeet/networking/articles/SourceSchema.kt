@@ -2,7 +2,7 @@ package com.krendel.neusfeet.networking.articles
 
 import com.google.gson.annotations.SerializedName
 
-data class Source(
+data class SourceSchema(
 
 	@field:SerializedName("name")
 	val name: String? = null,

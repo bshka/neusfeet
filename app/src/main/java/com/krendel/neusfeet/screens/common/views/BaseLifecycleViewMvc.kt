@@ -14,15 +14,16 @@ abstract class BaseLifecycleViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
     container: ViewGroup?
 ) : BaseViewMvc<B, A>(inflater, container), LifecycleObserver {
 
-
     init {
         @Suppress("LeakingThis")
         lifecycleOwner.lifecycle.addObserver(this)
-        dataBinding.lifecycleOwner = lifecycleOwner
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    override fun create() = Unit
+    override fun create() {
+        super.create()
+        dataBinding.lifecycleOwner = lifecycleOwner
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     protected open fun start() = Unit
@@ -38,6 +39,7 @@ abstract class BaseLifecycleViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun destroy() {
+        super.destroy()
         lifecycleOwner.lifecycle.removeObserver(this)
     }
 

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * @author Alexey Zubkovskiy on 20 May 2019
  */
-open class RecyclerBindingAdapter(items: List<ItemViewModel> = listOf(), val spanCount: Int = 12) :
+open class RecyclerBindingAdapter(items: List<ListItemViewMvc> = listOf(), val spanCount: Int = 12) :
     RecyclerView.Adapter<ViewHolderBinding<*>>() {
 
     private val items = items.toMutableList()
@@ -76,20 +76,20 @@ open class RecyclerBindingAdapter(items: List<ItemViewModel> = listOf(), val spa
      *  Item CRUD methods
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    fun getItem(position: Int): ItemViewModel = items[position]
+    fun getItem(position: Int): ListItemViewMvc = items[position]
 
-    fun getItems(): List<ItemViewModel> = items.toList()
+    fun getItems(): List<ListItemViewMvc> = items.toList()
 
-    fun setItems(vararg newItems: ItemViewModel) = setItems(newItems.asList())
+    fun setItems(vararg newItems: ListItemViewMvc) = setItems(newItems.asList())
 
-    open fun setItems(newItems: List<ItemViewModel>) {
+    open fun setItems(newItems: List<ListItemViewMvc>) {
         val diffResult = DiffUtil.calculateDiff(DiffHelper(newItems, items))
         items.clear()
         items.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun setItems(newItems: List<ItemViewModel>, forced: Boolean = false) {
+    fun setItems(newItems: List<ListItemViewMvc>, forced: Boolean = false) {
         if (forced) {
             items.clear()
             items.addAll(newItems)
@@ -102,7 +102,7 @@ open class RecyclerBindingAdapter(items: List<ItemViewModel> = listOf(), val spa
     /**
      * Add item to the list, by default - to the end of the list
      */
-    fun addItem(newItem: ItemViewModel, index: Int = items.lastIndex) {
+    fun addItem(newItem: ListItemViewMvc, index: Int = items.lastIndex) {
         items.add(index, newItem)
         notifyItemInserted(index)
     }
@@ -110,7 +110,7 @@ open class RecyclerBindingAdapter(items: List<ItemViewModel> = listOf(), val spa
     /**
      * Replace item in the list
      */
-    fun replaceItemAt(position: Int, viewModel: ItemViewModel) = setItems(items.mapIndexed { index, itemViewModel ->
+    fun replaceItemAt(position: Int, viewModel: ListItemViewMvc) = setItems(items.mapIndexed { index, itemViewModel ->
         when (index) {
             position -> viewModel
             else -> itemViewModel
@@ -120,7 +120,7 @@ open class RecyclerBindingAdapter(items: List<ItemViewModel> = listOf(), val spa
     /**
      * Remove item from the list
      */
-    fun removeItem(item: ItemViewModel) = setItems(items - item)
+    fun removeItem(item: ListItemViewMvc) = setItems(items - item)
 
     /**
      * Remove item at position from the list
@@ -139,7 +139,7 @@ open class RecyclerBindingAdapter(items: List<ItemViewModel> = listOf(), val spa
      *  Diff util
     \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    private class DiffHelper(val newItems: List<ItemViewModel>, val oldItems: List<ItemViewModel>) :
+    private class DiffHelper(val newItems: List<ListItemViewMvc>, val oldItems: List<ListItemViewMvc>) :
         DiffUtil.Callback() {
         override fun getOldListSize(): Int = oldItems.size
         override fun getNewListSize(): Int = newItems.size

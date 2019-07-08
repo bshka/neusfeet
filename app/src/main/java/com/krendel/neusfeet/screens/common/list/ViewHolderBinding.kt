@@ -4,12 +4,12 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.krendel.neusfeet.BR
 
-class ViewHolderBinding<out T : ViewDataBinding>(private val binding: T) : RecyclerView.ViewHolder(binding.root) {
-    var viewModel: ItemViewModel? = null
+class ViewHolderBinding<in T : ViewDataBinding>(private val binding: T) : RecyclerView.ViewHolder(binding.root) {
+    var viewModel: ListItemViewMvc? = null
         private set
     private var reused = false
 
-    fun bind(viewModel: ItemViewModel) {
+    fun bind(viewModel: ListItemViewMvc) {
         this.viewModel = viewModel
 
         if (!reused) viewModel.onSetup(binding)

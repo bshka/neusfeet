@@ -4,22 +4,22 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.databinding.BaseObservable
 import androidx.databinding.ViewDataBinding
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class ItemViewModel : BaseObservable() {
+abstract class ListItemViewMvc : BaseObservable() {
 
     @get:LayoutRes
     abstract val layout: Int
-
     val viewType: Int get() = layout
 
     abstract val id: Long
 
     protected val disposables: CompositeDisposable = CompositeDisposable()
 
-    open fun isTheSameItem(other: ItemViewModel) = this.id == other.id
+    open fun isTheSameItem(other: ListItemViewMvc) = this.id == other.id
 
-    open fun hasTheSameContent(other: ItemViewModel) = this == other
+    open fun hasTheSameContent(other: ListItemViewMvc) = this == other
 
     /**
      * @param spanCount The total span count

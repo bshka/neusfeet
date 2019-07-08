@@ -1,6 +1,8 @@
 package com.krendel.neusfeet.common
 
 import android.app.Application
+import com.krendel.neusfeet.BuildConfig
+import com.krendel.neusfeet.common.di.rxJava
 import com.krendel.neusfeet.common.di.viewModelModule
 import com.krendel.neusfeet.common.di.viewModule
 import org.koin.android.ext.koin.androidContext
@@ -11,17 +13,22 @@ class NewsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        // TODO
+        instance = this
         startKoin {
             androidContext(this@NewsApplication)
-            androidLogger()
+            if (BuildConfig.DEBUG) {
+                androidLogger()
+            }
             modules(
                 listOf(
-                    viewModelModule, viewModule
+                    viewModelModule, viewModule, rxJava
                 )
             )
         }
+    }
+
+    companion object {
+        lateinit var instance: NewsApplication
     }
 
 }

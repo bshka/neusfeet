@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.krendel.neusfeet.common.safetySubscribe
@@ -28,8 +29,11 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
         get() = dataBinding.root
 
     @Suppress("LeakingThis")
-    protected val dataBinding: B = DataBindingUtil
-        .inflate(inflater, layout, container, false)
+    protected val dataBinding: B by lazy {
+        val binding = DataBindingUtil.inflate(inflater, layout, container, false) as B
+        bindViewModel(binding)
+        binding
+    }
 
     protected val context: Context
         get() = rootView.context
@@ -49,8 +53,12 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
      */
     protected fun sendEvent(event: A) = eventSubject.onNext(event)
 
+    abstract fun bindViewModel(dataBinding: B)
+
+    @CallSuper
     protected open fun create() = Unit
 
+    @CallSuper
     protected open fun destroy() {
         disposables.dispose()
     }

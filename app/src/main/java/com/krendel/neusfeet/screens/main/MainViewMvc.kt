@@ -20,7 +20,12 @@ class MainViewMvc(
 
     override val layout: Int = R.layout.view_main
 
+    override fun bindViewModel(dataBinding: ViewMainBinding) {
+        dataBinding.viewModel = this
+    }
+
     override fun create() {
+        super.create()
         val host = fragmentManager
             .findFragmentById(R.id.nav_fragment) as NavHostFragment? ?: return
         dataBinding.bottomNavigation.setupWithNavController(host.navController)

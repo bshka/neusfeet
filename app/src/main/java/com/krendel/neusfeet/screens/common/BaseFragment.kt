@@ -18,7 +18,8 @@ abstract class BaseFragment<VM : BaseActionsViewModel<*>, V : ViewMvc> : Fragmen
 
     abstract val viewModel: VM
 
-    private lateinit var viewMvc: V
+    protected lateinit var viewMvc: V
+        private set
 
     private val disposables = CompositeDisposable()
 
