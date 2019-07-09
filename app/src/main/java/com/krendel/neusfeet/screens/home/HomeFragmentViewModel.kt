@@ -45,9 +45,14 @@ class HomeFragmentViewModel(
             .subscribe(
                 {
                     val list = mutableListOf<Article>()
-                    articlesSubject.value?.let { action ->
-                        list.addAll((action as HomeViewModelActions.ArticlesLoaded).articles)
+
+                    // replace data if refresh called
+                    if (page > 1) {
+                        articlesSubject.value?.let { action ->
+                            list.addAll((action as HomeViewModelActions.ArticlesLoaded).articles)
+                        }
                     }
+
                     list.addAll(it.articles)
                     articlesSubject.onNext(HomeViewModelActions.ArticlesLoaded(list))
 
