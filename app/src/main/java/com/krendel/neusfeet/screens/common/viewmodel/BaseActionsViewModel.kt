@@ -5,6 +5,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 
 abstract class BaseActionsViewModel<T : ViewModelActions> : BaseViewModel() {
 
@@ -29,14 +30,14 @@ abstract class BaseActionsViewModel<T : ViewModelActions> : BaseViewModel() {
 
     fun registerDataSource(observable: BehaviorSubject<T>) {
         dataDisposable.add(
-            observable.registerPublisher(eventSubject)
+            observable.registerObserver(eventSubject)
         )
     }
 }
 
 interface ViewModelActions
 
-fun <T : ViewModelActions> Observable<T>.registerPublisher(eventSubject: PublishSubject<T>): Disposable {
+fun <T : ViewModelActions> Observable<out T>.registerObserver(eventSubject: Subject<T>): Disposable {
     return subscribe(
         { eventSubject.onNext(it) },
         { eventSubject.onError(it) },

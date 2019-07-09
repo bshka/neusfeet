@@ -6,8 +6,11 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.ViewDataBinding
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 
-abstract class ListItemViewMvc : BaseObservable() {
+abstract class ListItemViewMvc<A : ListItemActions> : BaseObservable() {
 
     @get:LayoutRes
     abstract val layout: Int
@@ -17,9 +20,15 @@ abstract class ListItemViewMvc : BaseObservable() {
 
     protected val disposables: CompositeDisposable = CompositeDisposable()
 
-    open fun isTheSameItem(other: ListItemViewMvc) = this.id == other.id
+    private val eventSubject: PublishSubject<A> = PublishSubject.create()
 
-    open fun hasTheSameContent(other: ListItemViewMvc) = this == other
+    val eventsObservable: Observable<A> get() = eventSubject
+
+    protected fun sendEvent(event: A) = eventSubject.onNext(event)
+
+    open fun isTheSameItem(other: ListItemViewMvc<*>) = this.id == other.id
+
+    open fun hasTheSameContent(other: ListItemViewMvc<*>) = this == other
 
     /**
      * @param spanCount The total span count
@@ -46,4 +55,15 @@ abstract class ListItemViewMvc : BaseObservable() {
      */
     open fun onSetup(binding: ViewDataBinding) = Unit
 
+}
+
+interface ListItemActions
+
+fun <T: ListItemActions> Observable<out T>.registerObserver(eventSubject: Subject<T>): Disposable {
+    return subscribe(
+        { eventSubject.onNext(it) },
+        { eventSubject.onError(it) },
+        { eventSubject.onComplete() },
+        { eventSubject.onSubscribe(it) }
+    )
 }

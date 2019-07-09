@@ -10,7 +10,7 @@ import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val disposables = CompositeDisposable()
+    protected val disposables = CompositeDisposable()
 
     @CallSuper
     open fun start() = Unit

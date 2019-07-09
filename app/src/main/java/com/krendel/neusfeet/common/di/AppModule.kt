@@ -10,7 +10,6 @@ import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
-import com.krendel.neusfeet.screens.common.usecase.FetchTopHeadlinesUseCase
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
@@ -69,7 +68,6 @@ val rxJava = module {
 
 val useCaseModule = module {
 
-    single { FetchTopHeadlinesUseCase(get(), get()) }
 
 }
 

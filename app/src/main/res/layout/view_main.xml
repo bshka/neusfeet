@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.krendel.neusfeet.screens.main.MainViewMvc" />
@@ -28,6 +29,7 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="4dp"
             app:elevation="4dp"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/main_navigation" />
