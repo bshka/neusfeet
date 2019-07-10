@@ -1,21 +1,19 @@
 package com.krendel.neusfeet.screens.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewHomeBinding
 import com.krendel.neusfeet.model.Article
-import com.krendel.neusfeet.screens.common.list.ArticleItemViewActions
-import com.krendel.neusfeet.screens.common.list.ArticleItemViewModel
-import com.krendel.neusfeet.screens.common.list.ListItemActions
-import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
+import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
-import io.reactivex.subjects.PublishSubject
+import com.krendel.neusfeet.screens.common.views.articles.ArticlesListActions
+import com.krendel.neusfeet.screens.common.views.articles.ArticlesListViewMvc
 
 class HomeViewMvc(
     lifecycleOwner: LifecycleOwner,
@@ -24,9 +22,11 @@ class HomeViewMvc(
 ) : BaseLifecycleViewMvc<ViewHomeBinding, HomeViewActions>(lifecycleOwner, inflater, container) {
 
     override val layout: Int = R.layout.view_home
-    val recyclerData = ObservableField<PagedList<ArticleItemViewModel>>()
-
-    private val listEventsObserver = PublishSubject.create<ListItemActions>()
+    private lateinit var articlesListViewMvc: ArticlesListViewMvc
+    override var rootView: View = super.rootView
+        set(value) {
+            (field as ViewGroup).addView(value)
+        }
 
     override fun bindViewModel(dataBinding: ViewHomeBinding) {
         dataBinding.viewModel = this
@@ -34,22 +34,25 @@ class HomeViewMvc(
 
     override fun create() {
         super.create()
-        dataBinding.recyclerView.addItemDecoration(HomeItemsDecorator())
-        dataBinding.recyclerView.adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
-        dataBinding.refreshLayout.setOnRefreshListener {
-            sendEvent(HomeViewActions.Refresh)
-        }
+        articlesListViewMvc = ArticlesListViewMvc(
+            lifecycleOwner,
+            inflater,
+            rootView as ViewGroup
+        )
+        rootView = articlesListViewMvc.rootView
     }
 
     override fun start() {
         super.start()
-        observe(listEventsObserver) {
-            when (it) {
-                is ArticleItemViewActions.Clicked -> {
-                    sendEvent(HomeViewActions.ArticleClicked(it.article))
+        registerActionsSource(
+            articlesListViewMvc.eventsObservable.map {
+                when (it) {
+                    is ArticlesListActions.ArticleClicked -> HomeViewActions.ArticleClicked(it.article)
+                    is ArticlesListActions.Refresh -> HomeViewActions.Refresh
+                    else -> throw IllegalArgumentException("Unknown action!")
                 }
             }
-        }
+        )
     }
 
     fun errorOccurred(throwable: Throwable) {
@@ -58,12 +61,11 @@ class HomeViewMvc(
     }
 
     fun showLoading(show: Boolean) {
-        dataBinding.refreshLayout.isRefreshing = show
+        articlesListViewMvc.showLoading(show)
     }
 
     fun setArticles(articles: PagedList<ArticleItemViewModel>) {
-        dataBinding.refreshLayout.isRefreshing = false
-        recyclerData.set(articles)
+        articlesListViewMvc.setArticles(articles)
     }
 }
 

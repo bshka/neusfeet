@@ -4,7 +4,7 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.list.ArticleItemViewModel
+import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.repository.common.Listing
 import io.reactivex.disposables.CompositeDisposable
 

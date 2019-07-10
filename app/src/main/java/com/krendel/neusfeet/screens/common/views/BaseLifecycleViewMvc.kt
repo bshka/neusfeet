@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 
 abstract class BaseLifecycleViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
-    private val lifecycleOwner: LifecycleOwner,
+    protected val lifecycleOwner: LifecycleOwner,
     inflater: LayoutInflater,
     container: ViewGroup?
 ) : BaseViewMvc<B, A>(inflater, container), LifecycleObserver {

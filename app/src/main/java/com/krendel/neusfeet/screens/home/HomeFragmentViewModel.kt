@@ -2,7 +2,7 @@ package com.krendel.neusfeet.screens.home
 
 import androidx.paging.PagedList
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.list.ArticleItemViewModel
+import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
 import com.krendel.neusfeet.screens.common.repository.common.Listing

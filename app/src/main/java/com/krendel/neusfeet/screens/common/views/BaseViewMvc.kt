@@ -13,10 +13,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.Subject
 import timber.log.Timber
 
 abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
-    inflater: LayoutInflater,
+    protected val inflater: LayoutInflater,
     container: ViewGroup?
 ) : ViewMvc {
 
@@ -63,6 +64,14 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
         disposables.dispose()
     }
 
+    /**
+     * Register some outside source of [ViewMvcActions] in [ViewMvc] lifecycle
+     */
+    protected fun registerActionsSource(observable: Observable<out A>) {
+        observable.registerObserver(eventSubject)
+            .connectToLifecycle()
+    }
+
     protected fun <T> observe(what: Observable<T>, action: (T) -> Unit) {
         what.safetySubscribe(
             Consumer { result: T -> action(result) },
@@ -72,4 +81,13 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
 
     protected fun Disposable.connectToLifecycle() = disposables.add(this)
 
+}
+
+fun <T : ViewMvcActions> Observable<out T>.registerObserver(eventSubject: Subject<in T>): Disposable {
+    return subscribe(
+        { eventSubject.onNext(it) },
+        { eventSubject.onError(it) },
+        { eventSubject.onComplete() },
+        { eventSubject.onSubscribe(it) }
+    )
 }
