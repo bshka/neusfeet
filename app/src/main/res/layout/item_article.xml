@@ -25,7 +25,9 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
-                app:fitImageByUrl="@{viewModel.image}" />
+                android:scaleType="centerInside"
+                app:fitImageByUrl="@{viewModel.image}"
+                tools:src="@drawable/placeholder" />
 
             <TextView
                 android:layout_width="match_parent"

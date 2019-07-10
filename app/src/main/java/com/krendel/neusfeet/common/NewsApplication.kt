@@ -3,7 +3,7 @@ package com.krendel.neusfeet.common
 import android.app.Application
 import com.krendel.neusfeet.BuildConfig
 import com.krendel.neusfeet.common.di.rxJava
-import com.krendel.neusfeet.common.di.useCaseModule
+import com.krendel.neusfeet.common.di.repoModule
 import com.krendel.neusfeet.common.di.viewModelModule
 import com.krendel.neusfeet.common.di.viewModule
 import org.koin.android.ext.koin.androidContext
@@ -24,7 +24,7 @@ class NewsApplication : Application() {
             }
             modules(
                 listOf(
-                    viewModelModule, viewModule, rxJava, useCaseModule
+                    viewModelModule, viewModule, rxJava, repoModule
                 )
             )
         }

@@ -1,64 +1,46 @@
 package com.krendel.neusfeet.screens.home
 
-import androidx.paging.DataSource
 import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
-import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.binding.Listener
 import com.krendel.neusfeet.screens.common.list.ArticleItemViewModel
-import com.krendel.neusfeet.screens.common.repository.Listing
-import com.krendel.neusfeet.screens.common.repository.TopHeadlinesDatasourceFactory
-import com.krendel.neusfeet.screens.common.repository.TopHeadlinesRepository
+import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
+import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
+import com.krendel.neusfeet.screens.common.repository.common.Listing
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 
 class HomeFragmentViewModel(
-    newsApi: NewsApi,
+    repositoryFactory: RepositoryFactory,
     schedulersProvider: SchedulersProvider
 ) : BaseActionsViewModel<HomeViewModelActions>() {
 
-    private val listingSubject = PublishSubject.create<Listing<ArticleItemViewModel>>()
-    private val articlesSubject: BehaviorSubject<HomeViewModelActions> = BehaviorSubject.create()
-
-    private val loadingError: Listener = { sendEvent(HomeViewModelActions.LoadingError) }
-
-    private val repository = TopHeadlinesRepository(newsApi, schedulersProvider, disposables, loadingError)
-
-//    private val sourceFactory: DataSource.Factory<Int, ArticleItemViewModel> =
-//        TopHeadlinesDatasourceFactory(
-//            disposables,
-//            newsApi,
-//            schedulersProvider,
-//            loadingError
-//        ).map { ArticleItemViewModel(it) }
+    private val articlesSubject: BehaviorSubject<HomeViewModelActions.ArticlesLoaded> = BehaviorSubject.create()
+    private val repositoryListing: Listing<ArticleItemViewModel>
 
     init {
+        val repository = repositoryFactory.topHeadlinesRepository(disposables)
+        repositoryListing = repository.headlines(20)
 
-        disposables.add(
-            repository.headlines(20)
-                .dataList
-                .map { data ->
-                    HomeViewModelActions.ArticlesLoaded(data)
+        // data loading
+        repositoryListing
+            .dataList
+            .map { HomeViewModelActions.ArticlesLoaded(it) }
+            .registerObserver(articlesSubject)
+            .connectToLifecycle()
+
+        // data source events mapping
+        registerActionsSource(
+            repositoryListing.dataSourceActions
+                .map {
+                    when (it) {
+                        is DataSourceActions.Loading -> HomeViewModelActions.Loading(it.active)
+                        is DataSourceActions.Error -> HomeViewModelActions.Error(it.throwable)
+                    }
                 }
-                .registerObserver(articlesSubject)
+                .observeOn(schedulersProvider.main())
         )
-
-//        val config = PagedList.Config.Builder()
-//            .setPageSize(20)
-//            .setInitialLoadSizeHint(20)
-//            .setEnablePlaceholders(false)
-//            .build()
-//        disposables.add(RxPagedListBuilder(sourceFactory, config)
-//            .buildObservable()
-//            .map { data ->
-//                HomeViewModelActions.ArticlesLoaded(data)
-//            }
-//            .registerObserver(articlesSubject)
-//        )
     }
 
     override fun start() {
@@ -66,13 +48,14 @@ class HomeFragmentViewModel(
         registerDataSource(articlesSubject)
     }
 
-    fun reload() {
-
+    fun refresh() {
+        repositoryListing.refresh()
     }
 
 }
 
 sealed class HomeViewModelActions : ViewModelActions {
     data class ArticlesLoaded(val articles: PagedList<ArticleItemViewModel>) : HomeViewModelActions()
-    object LoadingError : HomeViewModelActions()
+    data class Error(val throwable: Throwable) : HomeViewModelActions()
+    data class Loading(val show: Boolean) : HomeViewModelActions()
 }

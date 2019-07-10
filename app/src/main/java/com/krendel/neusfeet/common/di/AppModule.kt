@@ -10,6 +10,7 @@ import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
+import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
@@ -54,10 +55,14 @@ val rxJava = module {
             .addInterceptor(logging)
             .build()
 
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create()
+
         Retrofit.Builder()
             .baseUrl("https://newsapi.org/")
             .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
     }
@@ -66,8 +71,9 @@ val rxJava = module {
 
 }
 
-val useCaseModule = module {
+val repoModule = module {
 
+    single { RepositoryFactory(get(), get()) }
 
 }
 

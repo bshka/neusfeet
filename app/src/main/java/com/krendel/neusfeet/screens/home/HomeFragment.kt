@@ -25,6 +25,12 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
                 is HomeViewModelActions.ArticlesLoaded -> {
                     viewMvc.setArticles(it.articles)
                 }
+                is HomeViewModelActions.Error -> {
+                    viewMvc.errorOccurred(it.throwable)
+                }
+                is HomeViewModelActions.Loading -> {
+                    viewMvc.showLoading(it.show)
+                }
             }
         }
     }
@@ -35,8 +41,8 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
                 is HomeViewActions.ArticleClicked -> {
                     Toast.makeText(context, "${it.article.title}", Toast.LENGTH_SHORT).show()
                 }
-                is HomeViewActions.Reload -> {
-                    viewModel.reload()
+                is HomeViewActions.Refresh -> {
+                    viewModel.refresh()
                 }
             }
         }

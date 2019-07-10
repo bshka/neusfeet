@@ -2,6 +2,7 @@ package com.krendel.neusfeet.screens.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagedList
@@ -35,9 +36,8 @@ class HomeViewMvc(
         super.create()
         dataBinding.recyclerView.addItemDecoration(HomeItemsDecorator())
         dataBinding.recyclerView.adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
-        dataBinding.refreshLayout.isRefreshing = true
         dataBinding.refreshLayout.setOnRefreshListener {
-            sendEvent(HomeViewActions.Reload)
+            sendEvent(HomeViewActions.Refresh)
         }
     }
 
@@ -52,6 +52,15 @@ class HomeViewMvc(
         }
     }
 
+    fun errorOccurred(throwable: Throwable) {
+        // TODO maybe human-readable error
+        Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showLoading(show: Boolean) {
+        dataBinding.refreshLayout.isRefreshing = show
+    }
+
     fun setArticles(articles: PagedList<ArticleItemViewModel>) {
         dataBinding.refreshLayout.isRefreshing = false
         recyclerData.set(articles)
@@ -60,5 +69,5 @@ class HomeViewMvc(
 
 sealed class HomeViewActions : ViewMvcActions {
     data class ArticleClicked(val article: Article) : HomeViewActions()
-    object Reload : HomeViewActions()
+    object Refresh : HomeViewActions()
 }

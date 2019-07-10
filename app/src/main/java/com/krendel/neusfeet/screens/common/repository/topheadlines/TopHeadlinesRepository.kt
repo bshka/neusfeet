@@ -1,18 +1,17 @@
-package com.krendel.neusfeet.screens.common.repository
+package com.krendel.neusfeet.screens.common.repository.topheadlines
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.binding.Listener
 import com.krendel.neusfeet.screens.common.list.ArticleItemViewModel
+import com.krendel.neusfeet.screens.common.repository.common.Listing
 import io.reactivex.disposables.CompositeDisposable
 
 class TopHeadlinesRepository(
     private val newsApi: NewsApi,
     private val schedulersProvider: SchedulersProvider,
-    private val compositeDisposable: CompositeDisposable,
-    private val errorListener: Listener
+    private val compositeDisposable: CompositeDisposable
 ) {
 
     fun headlines(pageSize: Int): Listing<ArticleItemViewModel> {
@@ -20,9 +19,8 @@ class TopHeadlinesRepository(
         val sourceFactory = TopHeadlinesDatasourceFactory(
             newsApi = newsApi,
             schedulersProvider = schedulersProvider,
-            compositeDisposable = compositeDisposable,
-            errorListener = errorListener
-        ).map { ArticleItemViewModel(it) }
+            compositeDisposable = compositeDisposable
+        )
 
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
@@ -31,11 +29,16 @@ class TopHeadlinesRepository(
             .build()
 
         return Listing(
-            dataList = RxPagedListBuilder<Int, ArticleItemViewModel>(sourceFactory, config).buildObservable(),
+            dataList = RxPagedListBuilder<Int, ArticleItemViewModel>(
+                sourceFactory.map { ArticleItemViewModel(it) },
+                config
+            )
+                .setFetchScheduler(schedulersProvider.main())
+                .buildObservable(),
             refresh = {
-                (sourceFactory as TopHeadlinesDatasourceFactory).dataSource.value?.invalidate()
+                sourceFactory.refresh()
             },
-            error = errorListener
+            dataSourceActions = sourceFactory.eventsObservable()
         )
     }
 

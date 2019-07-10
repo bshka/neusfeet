@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface NewsApi {
 
-    @GET("/v2/top-headlines?language=ru")
+    @GET("/v2/top-headlines?language=en")
     fun headlines(@Query( "page") page: Int = 1, @Query("pageSize") pageSize: Int = 20): Single<ArticlesSchema>
 
     @GET("/v2/everything")

@@ -19,6 +19,10 @@ abstract class BaseActionsViewModel<T : ViewModelActions> : BaseViewModel() {
      * */
     val eventsObservable: Observable<T> get() = eventSubject
 
+    /**
+     * Clears in [stop]. All data associated subjects must be registered via [registerDataSource].
+     * Register data source in [start]
+     */
     private val dataDisposable = CompositeDisposable()
 
     protected fun sendEvent(event: T) = eventSubject.onNext(event)
@@ -28,16 +32,27 @@ abstract class BaseActionsViewModel<T : ViewModelActions> : BaseViewModel() {
         dataDisposable.clear()
     }
 
-    fun registerDataSource(observable: BehaviorSubject<T>) {
+    /**
+     * Register data source [BehaviorSubject] to data source's lifecycle
+     */
+    protected fun registerDataSource(observable: BehaviorSubject<out T>) {
         dataDisposable.add(
             observable.registerObserver(eventSubject)
         )
+    }
+
+    /**
+     * Register some outside source of [ViewModelActions] in [androidx.lifecycle.ViewModel] lifecycle
+     */
+    protected fun registerActionsSource(observable: Observable<out T>) {
+        observable.registerObserver(eventSubject)
+            .connectToLifecycle()
     }
 }
 
 interface ViewModelActions
 
-fun <T : ViewModelActions> Observable<out T>.registerObserver(eventSubject: Subject<T>): Disposable {
+fun <T : ViewModelActions> Observable<out T>.registerObserver(eventSubject: Subject<in T>): Disposable {
     return subscribe(
         { eventSubject.onNext(it) },
         { eventSubject.onError(it) },

@@ -4,18 +4,18 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.View
-import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.RequestOptions
+import com.krendel.neusfeet.R
 import com.krendel.neusfeet.common.NewsApplication
 
-fun RequestBuilder<Drawable>.fitAndCrop(@DrawableRes placeholder: Int = -1): RequestBuilder<Drawable> =
+fun RequestBuilder<Drawable>.fitAndCrop(): RequestBuilder<Drawable> =
     this.apply(RequestOptions().fitCenter().centerCrop())
-        .thumbnail(
+        .error(
             Glide.with(NewsApplication.instance)
-                .load(placeholder)
-                .apply(RequestOptions().fitCenter().centerCrop())
+                .load(R.drawable.placeholder)
+                .apply(RequestOptions().centerInside())
         )
 
 fun Context.applyDP(px: Float): Int =
