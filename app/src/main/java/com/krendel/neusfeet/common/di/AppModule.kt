@@ -15,6 +15,8 @@ import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
 import com.krendel.neusfeet.screens.main.MainViewMvc
+import com.krendel.neusfeet.screens.search.SearchFragmentViewModel
+import com.krendel.neusfeet.screens.search.SearchViewMvc
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -79,10 +81,17 @@ val repoModule = module {
 
 val viewModule = module {
 
+    // search view
+    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
+        SearchViewMvc(lifecycleOwner, inflater, container)
+    }
+
+    // home view
     factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
         HomeViewMvc(lifecycleOwner, inflater, container)
     }
 
+    // main view
     factory { (fm: FragmentManager, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
         MainViewMvc(fm, lifecycleOwner, inflater, container)
     }
@@ -98,5 +107,7 @@ val viewModelModule = module {
 
     // home fragment
     viewModel { HomeFragmentViewModel(get(), get()) }
+    // search fragment
+    viewModel { SearchFragmentViewModel() }
 
 }

@@ -10,4 +10,9 @@
         android:name="com.krendel.neusfeet.screens.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/view_home" />
+    <fragment
+        android:id="@+id/search"
+        android:name="com.krendel.neusfeet.screens.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/view_search" />
 </navigation>
