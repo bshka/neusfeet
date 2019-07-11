@@ -10,7 +10,8 @@ import io.reactivex.subjects.BehaviorSubject
 class TopHeadlinesDatasourceFactory(
     private val compositeDisposable: CompositeDisposable,
     private val newsApi: NewsApi,
-    private val schedulersProvider: SchedulersProvider
+    private val schedulersProvider: SchedulersProvider,
+    private val configuration: TopHeadlinesFetchConfiguration
 ) : AppDataSourceFactory<TopHeadlinesDataSource, Article>() {
 
     override val dataSource: BehaviorSubject<TopHeadlinesDataSource> = BehaviorSubject.create()
@@ -19,7 +20,13 @@ class TopHeadlinesDatasourceFactory(
         TopHeadlinesDataSource(
             newsApi,
             schedulersProvider,
+            configuration,
             compositeDisposable
         )
 
 }
+
+data class TopHeadlinesFetchConfiguration(
+    var pageSize: Int,
+    var query: String? = null
+)

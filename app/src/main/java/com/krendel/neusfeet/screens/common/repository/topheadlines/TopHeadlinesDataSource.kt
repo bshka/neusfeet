@@ -15,6 +15,7 @@ import timber.log.Timber
 class TopHeadlinesDataSource(
     private val newsApi: NewsApi,
     private val schedulersProvider: SchedulersProvider,
+    private val configuration: TopHeadlinesFetchConfiguration,
     compositeDisposable: CompositeDisposable
 ) : AppDataSource<Int, Article>(compositeDisposable) {
 
@@ -88,7 +89,8 @@ class TopHeadlinesDataSource(
     private fun loadHeadlines(page: Int, pageSize: Int): Single<FetchTopHeadlinesResult> {
         return newsApi.headlines(
             pageSize = pageSize,
-            page = page
+            page = page,
+            query = configuration.query
         ).subscribeOn(schedulersProvider.io())
             .map { data ->
                 val result = mutableListOf<Article>()

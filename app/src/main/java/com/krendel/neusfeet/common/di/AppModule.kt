@@ -108,6 +108,6 @@ val viewModelModule = module {
     // home fragment
     viewModel { HomeFragmentViewModel(get(), get()) }
     // search fragment
-    viewModel { SearchFragmentViewModel() }
+    viewModel { SearchFragmentViewModel(get(), get()) }
 
 }

@@ -11,13 +11,5 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="AS DASLKF JALFK JLKAF JLAKFJ ALKSFJ " />
-
-    </LinearLayout>
+        android:orientation="vertical" />
 </layout>

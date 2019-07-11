@@ -16,7 +16,7 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import timber.log.Timber
 
-abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
+abstract class BaseViewMvc<BindingType : ViewDataBinding, ActionsType : ViewMvcActions>(
     protected val inflater: LayoutInflater,
     container: ViewGroup?
 ) : ViewMvc {
@@ -24,20 +24,24 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
     /**
      * Fragment or activity should subscribe on this observable for working with ViewMvc events
      * */
-    val eventsObservable: Observable<A> get() = eventSubject
+    val eventsObservable: Observable<ActionsType> get() = eventSubject
 
     override val rootView: View
         get() = dataBinding.root
 
     @Suppress("LeakingThis")
-    protected val dataBinding: B by lazy {
-        val binding = DataBindingUtil.inflate(inflater, layout, container, false) as B
+    protected val dataBinding: BindingType by lazy {
+        val binding = DataBindingUtil.inflate(inflater, layout, container, false) as BindingType
         bindViewModel(binding)
         binding
     }
 
     protected val context: Context
         get() = rootView.context
+
+    @Suppress("LeakingThis")
+    protected open val rootContainer: ViewGroup
+        get() = rootView as ViewGroup
 
     /**
      * For inner rx observers
@@ -47,14 +51,14 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
     /**
      * This subject used for notifying view about View Model events
      * */
-    private val eventSubject: PublishSubject<A> = PublishSubject.create()
+    private val eventSubject: PublishSubject<ActionsType> = PublishSubject.create()
 
     /**
      * Send view event to observers
      */
-    protected fun sendEvent(event: A) = eventSubject.onNext(event)
+    protected fun sendEvent(event: ActionsType) = eventSubject.onNext(event)
 
-    abstract fun bindViewModel(dataBinding: B)
+    abstract fun bindViewModel(dataBinding: BindingType)
 
     @CallSuper
     protected open fun create() = Unit
@@ -67,7 +71,7 @@ abstract class BaseViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
     /**
      * Register some outside source of [ViewMvcActions] in [ViewMvc] lifecycle
      */
-    protected fun registerActionsSource(observable: Observable<out A>) {
+    protected fun registerActionsSource(observable: Observable<out ActionsType>) {
         observable.registerObserver(eventSubject)
             .connectToLifecycle()
     }

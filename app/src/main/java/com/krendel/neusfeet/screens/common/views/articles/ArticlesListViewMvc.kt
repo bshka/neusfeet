@@ -11,15 +11,14 @@ import com.krendel.neusfeet.model.Article
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
+import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
-import com.krendel.neusfeet.screens.home.HomeItemsDecorator
 import io.reactivex.subjects.PublishSubject
 
 class ArticlesListViewMvc(
-    lifecycleOwner: LifecycleOwner,
     inflater: LayoutInflater,
     container: ViewGroup?
-) : BaseLifecycleViewMvc<ViewArticlesListBinding, ViewMvcActions>(lifecycleOwner, inflater, container) {
+) : BaseViewMvc<ViewArticlesListBinding, ViewMvcActions>(inflater, container) {
 
     override val layout: Int = R.layout.view_articles_list
     val recyclerData = ObservableField<PagedList<ArticleItemViewModel>>()
@@ -30,9 +29,8 @@ class ArticlesListViewMvc(
         dataBinding.viewModel = this
     }
 
-    override fun create() {
-        super.create()
-        dataBinding.recyclerView.addItemDecoration(HomeItemsDecorator())
+    init {
+        dataBinding.recyclerView.addItemDecoration(ArticlesItemsDecorator())
         dataBinding.recyclerView.adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
         dataBinding.refreshLayout.setOnRefreshListener {
             sendEvent(ArticlesListActions.Refresh)

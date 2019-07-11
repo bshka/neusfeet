@@ -6,6 +6,7 @@ import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
 import com.krendel.neusfeet.screens.common.repository.common.Listing
+import com.krendel.neusfeet.screens.common.repository.topheadlines.TopHeadlinesFetchConfiguration
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
@@ -19,9 +20,11 @@ class HomeFragmentViewModel(
     private val articlesSubject: BehaviorSubject<HomeViewModelActions.ArticlesLoaded> = BehaviorSubject.create()
     private val repositoryListing: Listing<ArticleItemViewModel>
 
+    private val configuration = TopHeadlinesFetchConfiguration(20)
+
     init {
-        val repository = repositoryFactory.topHeadlinesRepository(disposables)
-        repositoryListing = repository.headlines(20)
+        val repository = repositoryFactory.topHeadlinesRepository(configuration, disposables)
+        repositoryListing = repository.headlines(configuration.pageSize)
 
         // data loading
         repositoryListing
