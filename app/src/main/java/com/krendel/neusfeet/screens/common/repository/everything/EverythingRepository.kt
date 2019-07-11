@@ -1,4 +1,4 @@
-package com.krendel.neusfeet.screens.common.repository.topheadlines
+package com.krendel.neusfeet.screens.common.repository.everything
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
@@ -8,16 +8,15 @@ import com.krendel.neusfeet.screens.common.repository.common.Listing
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-class TopHeadlinesRepository(
+class EverythingRepository(
     private val newsApi: NewsApi,
     private val schedulersProvider: SchedulersProvider,
     private val compositeDisposable: CompositeDisposable,
-    private val configuration: TopHeadlinesFetchConfiguration
+    private val configuration: EverythingFetchConfiguration
 ) {
 
-    fun headlines(pageSize: Int): Listing<ArticleItemViewModel> {
-
-        val sourceFactory = TopHeadlinesDataSourceFactory(
+    fun everything(pageSize: Int): Listing<ArticleItemViewModel> {
+        val sourceFactory = EverythingDataSourceFactory(
             newsApi = newsApi,
             schedulersProvider = schedulersProvider,
             compositeDisposable = compositeDisposable,

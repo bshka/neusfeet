@@ -5,7 +5,7 @@ import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
 import com.krendel.neusfeet.screens.common.repository.common.Listing
-import com.krendel.neusfeet.screens.common.repository.topheadlines.TopHeadlinesFetchConfiguration
+import com.krendel.neusfeet.screens.common.repository.everything.EverythingFetchConfiguration
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
@@ -20,11 +20,11 @@ class SearchFragmentViewModel(
     private val articlesSubject: BehaviorSubject<SearchViewModelActions.ArticlesLoaded> = BehaviorSubject.create()
     private var repositoryListing: Listing<ArticleItemViewModel>
 
-    private val configuration = TopHeadlinesFetchConfiguration(20)
+    private val configuration = EverythingFetchConfiguration(20, "")
 
     init {
-        val repository = repositoryFactory.topHeadlinesRepository(configuration, disposables)
-        repositoryListing = repository.headlines(20)
+        val repository = repositoryFactory.everythingRepository(configuration, disposables)
+        repositoryListing = repository.everything(configuration.pageSize)
 
         // data loading
         repositoryListing

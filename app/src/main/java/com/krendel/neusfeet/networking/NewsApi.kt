@@ -11,8 +11,8 @@ interface NewsApi {
     @GET("/v2/top-headlines?language=en")
     fun headlines(@Query( "page") page: Int = 1, @Query("pageSize") pageSize: Int = 20, @Query("q") query: String? = null): Single<ArticlesSchema>
 
-    @GET("/v2/everything")
-    fun everything(): Single<ArticlesSchema>
+    @GET("/v2/everything?language=en")
+    fun everything(@Query( "page") page: Int = 1, @Query("pageSize") pageSize: Int = 20, @Query("q") query: String? = null): Single<ArticlesSchema>
 
     @GET("/v2/sources")
     fun sources(): Single<SourceSchema>

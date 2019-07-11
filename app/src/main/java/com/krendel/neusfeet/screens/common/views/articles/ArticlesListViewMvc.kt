@@ -2,15 +2,14 @@ package com.krendel.neusfeet.screens.common.views.articles
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewArticlesListBinding
 import com.krendel.neusfeet.model.Article
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
-import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import io.reactivex.subjects.PublishSubject
@@ -53,12 +52,19 @@ class ArticlesListViewMvc(
     }
 
     fun setArticles(articles: PagedList<ArticleItemViewModel>) {
+        dataBinding.viewSwitcher.displayedChild = 1
+//        dataBinding.recyclerView.doOnPreDraw {
+//            dataBinding.viewSwitcher.displayedChild = if (articles.isEmpty()) 0 else 1
+//        }
         dataBinding.refreshLayout.isRefreshing = false
-        recyclerData.set(articles)
+
+        if (recyclerData.get() == null) {
+            recyclerData.set(articles)
+        }
     }
 }
 
 sealed class ArticlesListActions : ViewMvcActions {
     data class ArticleClicked(val article: Article) : ArticlesListActions()
-    object Refresh: ArticlesListActions()
+    object Refresh : ArticlesListActions()
 }

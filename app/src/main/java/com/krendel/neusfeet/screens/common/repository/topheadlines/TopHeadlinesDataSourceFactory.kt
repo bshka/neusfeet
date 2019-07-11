@@ -7,7 +7,7 @@ import com.krendel.neusfeet.screens.common.repository.common.AppDataSourceFactor
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 
-class TopHeadlinesDatasourceFactory(
+class TopHeadlinesDataSourceFactory(
     private val compositeDisposable: CompositeDisposable,
     private val newsApi: NewsApi,
     private val schedulersProvider: SchedulersProvider,

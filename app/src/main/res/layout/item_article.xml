@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:foreground="?selectableItemBackground"
         android:onClickListener="@{viewModel.onClick}"
+        app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
 
         <LinearLayout

@@ -9,17 +9,32 @@
             type="com.krendel.neusfeet.screens.common.views.articles.ArticlesListViewMvc" />
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+    <ViewSwitcher
+        android:id="@+id/view_switcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:viewModelItems="@{viewModel.recyclerData}" />
+            android:fontFamily="@font/sfui_bold"
+            android:gravity="center"
+            android:text="@string/empty_articles"
+            android:textSize="22sp" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:viewModelItems="@{viewModel.recyclerData}" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </ViewSwitcher>
 </layout>
