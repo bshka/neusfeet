@@ -1,4 +1,4 @@
-package com.krendel.neusfeet.screens.search
+package com.krendel.neusfeet.screens.common.views.search
 
 import android.text.Editable
 import android.view.LayoutInflater

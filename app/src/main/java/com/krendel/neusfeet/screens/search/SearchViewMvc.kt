@@ -13,6 +13,7 @@ import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.views.articles.ArticlesListActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticlesListViewMvc
+import com.krendel.neusfeet.screens.common.views.search.SearchBarViewActions
 
 class SearchViewMvc(
     lifecycleOwner: LifecycleOwner,
@@ -29,7 +30,8 @@ class SearchViewMvc(
     }
 
     init {
-        val searchBarViewMvc = SearchBarViewMvc(inflater, rootContainer)
+        val searchBarViewMvc =
+            com.krendel.neusfeet.screens.common.views.search.SearchBarViewMvc(inflater, rootContainer)
         rootContainer.addView(searchBarViewMvc.rootView)
         rootContainer.addView(articlesListViewMvc.rootView)
 
