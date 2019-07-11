@@ -25,12 +25,8 @@ class PreviewViewMvc(
 
     override val layout: Int = R.layout.view_article_preview
 
-    val statusBarHeight: Int by lazy {
-        context.getStatusBarHeight()
-    }
-
     val imageMinHeight: Int by lazy {
-        context.getAttributeDimension(R.attr.actionBarSize) + statusBarHeight
+        context.getAttributeDimension(R.attr.actionBarSize) + context.getStatusBarHeight()
     }
 
     val image: String? = article.urlToImage
