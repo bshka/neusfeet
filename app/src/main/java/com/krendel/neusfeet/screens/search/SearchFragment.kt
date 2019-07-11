@@ -1,9 +1,11 @@
 package com.krendel.neusfeet.screens.search
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.WindowManager
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.krendel.neusfeet.screens.common.BaseFragment
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +37,7 @@ class SearchFragment : BaseFragment<SearchFragmentViewModel, SearchViewMvc>() {
                 is SearchViewActions.Refresh -> viewModel.refresh()
                 is SearchViewActions.SearchQuery -> viewModel.searchQuery(it.query)
                 is SearchViewActions.ArticleClicked -> {
-                    Toast.makeText(context, "${it.article.title}", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(SearchFragmentDirections.actionSearchToPreview(it.article))
                 }
             }
         }

@@ -14,11 +14,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
-abstract class BaseFragment<VM : BaseActionsViewModel<*>, V : ViewMvc> : Fragment() {
+abstract class BaseFragment<ViewModel : BaseActionsViewModel<*>, ViewMvcType : ViewMvc> : Fragment() {
 
-    abstract val viewModel: VM
+    abstract val viewModel: ViewModel
 
-    protected lateinit var viewMvc: V
+    protected lateinit var viewMvc: ViewMvcType
         private set
 
     private val disposables = CompositeDisposable()
@@ -36,7 +36,7 @@ abstract class BaseFragment<VM : BaseActionsViewModel<*>, V : ViewMvc> : Fragmen
         inflater: LayoutInflater,
         container: ViewGroup?,
         lifecycleOwner: LifecycleOwner
-    ): V
+    ): ViewMvcType
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,8 +65,8 @@ abstract class BaseFragment<VM : BaseActionsViewModel<*>, V : ViewMvc> : Fragmen
         disposables.clear()
     }
 
-    protected abstract fun subscribeToViewModel(viewModel: VM)
-    protected abstract fun subscribeToView(viewMvc: V)
+    protected abstract fun subscribeToViewModel(viewModel: ViewModel)
+    protected abstract fun subscribeToView(viewMvc: ViewMvcType)
 
     protected fun <T> observe(what: Observable<T>, action: (T) -> Unit) {
         what

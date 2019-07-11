@@ -8,6 +8,7 @@ import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSearchBinding
 import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.screens.common.getStatusBarHeight
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
@@ -22,6 +23,10 @@ class SearchViewMvc(
 ) : BaseLifecycleViewMvc<ViewSearchBinding, SearchViewActions>(lifecycleOwner, inflater, container) {
 
     override val layout: Int = R.layout.view_search
+
+    val statusBarHeight: Int by lazy {
+        context.getStatusBarHeight()
+    }
 
     private val articlesListViewMvc = ArticlesListViewMvc(inflater, rootContainer)
 

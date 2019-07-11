@@ -9,6 +9,7 @@ import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewHomeBinding
 import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.screens.common.getStatusBarHeight
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
@@ -20,6 +21,10 @@ class HomeViewMvc(
     inflater: LayoutInflater,
     container: ViewGroup?
 ) : BaseLifecycleViewMvc<ViewHomeBinding, HomeViewActions>(lifecycleOwner, inflater, container) {
+
+    val statusBarHeight: Int by lazy {
+        context.getStatusBarHeight()
+    }
 
     override val layout: Int = R.layout.view_home
     private val articlesListViewMvc: ArticlesListViewMvc = ArticlesListViewMvc(

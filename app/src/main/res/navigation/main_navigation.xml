@@ -9,10 +9,29 @@
         android:id="@+id/home"
         android:name="com.krendel.neusfeet.screens.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/view_home" />
+        tools:layout="@layout/view_home" >
+        <action
+            android:id="@+id/action_home_to_preview"
+            app:destination="@id/preview"
+            app:popUpTo="@+id/home" />
+    </fragment>
     <fragment
         android:id="@+id/search"
         android:name="com.krendel.neusfeet.screens.search.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/view_search" />
+        tools:layout="@layout/view_search" >
+        <action
+            android:id="@+id/action_search_to_preview"
+            app:destination="@id/preview"
+            app:popUpTo="@+id/search" />
+    </fragment>
+    <fragment
+        android:id="@+id/preview"
+        android:name="com.krendel.neusfeet.screens.preview.PreviewFragment"
+        android:label="PreviewFragment"
+        tools:layout="@layout/view_article_preview" >
+        <argument
+            android:name="article"
+            app:argType="com.krendel.neusfeet.model.Article" />
+    </fragment>
 </navigation>

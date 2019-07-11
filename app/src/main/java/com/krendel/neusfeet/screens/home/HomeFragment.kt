@@ -2,8 +2,8 @@ package com.krendel.neusfeet.screens.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.krendel.neusfeet.screens.common.BaseFragment
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,7 +39,7 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
         observe(viewMvc.eventsObservable) {
             when (it) {
                 is HomeViewActions.ArticleClicked -> {
-                    Toast.makeText(context, "${it.article.title}", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(HomeFragmentDirections.actionHomeToPreview(it.article))
                 }
                 is HomeViewActions.Refresh -> {
                     viewModel.refresh()

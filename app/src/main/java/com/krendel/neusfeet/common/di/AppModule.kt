@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.GsonBuilder
 import com.krendel.neusfeet.BuildConfig
+import com.krendel.neusfeet.model.Article
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
@@ -15,6 +16,8 @@ import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
 import com.krendel.neusfeet.screens.main.MainViewMvc
+import com.krendel.neusfeet.screens.preview.PreviewFragmentViewModel
+import com.krendel.neusfeet.screens.preview.PreviewViewMvc
 import com.krendel.neusfeet.screens.search.SearchFragmentViewModel
 import com.krendel.neusfeet.screens.search.SearchViewMvc
 import io.reactivex.schedulers.Schedulers
@@ -81,6 +84,11 @@ val repoModule = module {
 
 val viewModule = module {
 
+    // article view
+    factory { (article: Article, lifecycleOwner: LifecycleOwner, inflater: LayoutInflater, container: ViewGroup?) ->
+        PreviewViewMvc(article, lifecycleOwner, inflater, container)
+    }
+
     // search view
     factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
         SearchViewMvc(lifecycleOwner, inflater, container)
@@ -92,8 +100,8 @@ val viewModule = module {
     }
 
     // main view
-    factory { (fm: FragmentManager, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        MainViewMvc(fm, lifecycleOwner, inflater, container)
+    factory { (fragmentManager: FragmentManager, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
+        MainViewMvc(fragmentManager, lifecycleOwner, inflater, container)
     }
 
 }
@@ -109,5 +117,7 @@ val viewModelModule = module {
     viewModel { HomeFragmentViewModel(get(), get()) }
     // search fragment
     viewModel { SearchFragmentViewModel(get(), get()) }
+    // article preview fragment
+    viewModel { PreviewFragmentViewModel() }
 
 }

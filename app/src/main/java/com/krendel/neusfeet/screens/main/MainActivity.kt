@@ -1,6 +1,7 @@
 package com.krendel.neusfeet.screens.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.krendel.neusfeet.screens.common.BaseActivity
@@ -16,7 +17,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, MainViewMvc>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         lifecycleOwner: LifecycleOwner
-    ): MainViewMvc = get { parametersOf(supportFragmentManager, inflater, container, lifecycleOwner) }
+    ): MainViewMvc {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        return get { parametersOf(supportFragmentManager, inflater, container, lifecycleOwner) }
+    }
 
     override fun subscribeToView(viewMvc: MainViewMvc) {
         observe(viewMvc.eventsObservable) {

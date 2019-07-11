@@ -10,5 +10,6 @@
     <color name="black">#030303</color>
     <color name="french_gray">#C7C7CD</color>
     <color name="manatee">#8F8E94</color>
+    <color name="french_gray_alpha_67">#AAC7C7CD</color>
 
 </resources>
