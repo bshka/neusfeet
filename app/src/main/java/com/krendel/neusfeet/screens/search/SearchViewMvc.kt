@@ -52,6 +52,7 @@ class SearchViewMvc(
             searchBarViewMvc.eventsObservable.map {
                 when (it) {
                     is SearchBarViewActions.SearchQuery -> SearchViewActions.SearchQuery(it.query)
+                    else -> throw IllegalArgumentException("Unknown action!")
                 }
             }
         )
