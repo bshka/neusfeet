@@ -12,16 +12,14 @@ import com.krendel.neusfeet.screens.common.binding.Listener
 import com.krendel.neusfeet.screens.common.getAttributeDimension
 import com.krendel.neusfeet.screens.common.getStatusBarHeight
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PreviewViewMvc(
-    private val article: Article,
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    lifecycleOwner: LifecycleOwner
-) : BaseLifecycleViewMvc<ViewArticlePreviewBinding, PreviewViewActions>(inflater, container, lifecycleOwner) {
+    configuration: PreviewViewConfiguration
+) : BaseLifecycleViewMvc<PreviewViewConfiguration, ViewArticlePreviewBinding, PreviewViewActions>(configuration) {
 
     override val layout: Int = R.layout.view_article_preview
 
@@ -29,12 +27,13 @@ class PreviewViewMvc(
         context.getAttributeDimension(R.attr.actionBarSize) + context.getStatusBarHeight()
     }
 
-    val image: String? = article.urlToImage
-    val title: String? = article.title
-    val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).format(article.publishedAt ?: Date())
-    val content: Spanned? = HtmlCompat.fromHtml(article.content ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT)
+    val image: String? = configuration.article.urlToImage
+    val title: String? = configuration.article.title
+    val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+        .format(configuration.article.publishedAt ?: Date())
+    val content: Spanned? = HtmlCompat.fromHtml(configuration.article.content ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-    val readArticle: Listener = { sendEvent(PreviewViewActions.ReadArticle(article)) }
+    val readArticle: Listener = { sendEvent(PreviewViewActions.ReadArticle(configuration.article)) }
 
     override fun bindViewModel(dataBinding: ViewArticlePreviewBinding) {
         dataBinding.viewModel = this
@@ -45,3 +44,10 @@ class PreviewViewMvc(
 sealed class PreviewViewActions : ViewMvcActions {
     data class ReadArticle(val article: Article) : PreviewViewActions()
 }
+
+data class PreviewViewConfiguration(
+    val article: Article,
+    override val lifecycleOwner: LifecycleOwner,
+    override val inflater: LayoutInflater,
+    override val container: ViewGroup?
+) : LifecycleViewMvcConfiguration

@@ -1,18 +1,14 @@
 package com.krendel.neusfeet.screens.bookmarks
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewBookmarksBinding
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 
 class BookmarksViewMvc(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    lifecycleOwner: LifecycleOwner
-): BaseLifecycleViewMvc<ViewBookmarksBinding, BookmarksViewActions>(inflater, container, lifecycleOwner) {
+    configuration: LifecycleViewMvcConfiguration
+) : BaseLifecycleViewMvc<LifecycleViewMvcConfiguration, ViewBookmarksBinding, BookmarksViewActions>(configuration) {
 
     override val layout: Int = R.layout.view_bookmarks
 
@@ -21,4 +17,4 @@ class BookmarksViewMvc(
     }
 }
 
-sealed class BookmarksViewActions: ViewMvcActions
+sealed class BookmarksViewActions : ViewMvcActions

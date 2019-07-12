@@ -8,21 +8,19 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 
-abstract class BaseLifecycleViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    protected val lifecycleOwner: LifecycleOwner
-) : BaseViewMvc<B, A>(inflater, container), LifecycleObserver {
+abstract class BaseLifecycleViewMvc<out C : LifecycleViewMvcConfiguration, B : ViewDataBinding, A : ViewMvcActions>(
+    configuration: C
+) : BaseViewMvc<C, B, A>(configuration), LifecycleObserver {
 
     init {
         @Suppress("LeakingThis")
-        lifecycleOwner.lifecycle.addObserver(this)
+        configuration.lifecycleOwner.lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     override fun create() {
         super.create()
-        dataBinding.lifecycleOwner = lifecycleOwner
+        dataBinding.lifecycleOwner = configuration.lifecycleOwner
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -40,7 +38,17 @@ abstract class BaseLifecycleViewMvc<B : ViewDataBinding, A : ViewMvcActions>(
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun destroy() {
         super.destroy()
-        lifecycleOwner.lifecycle.removeObserver(this)
+        configuration.lifecycleOwner.lifecycle.removeObserver(this)
     }
 
 }
+
+interface LifecycleViewMvcConfiguration : ViewMvcConfiguration {
+    val lifecycleOwner: LifecycleOwner
+}
+
+data class BaseLifecycleViewMvcConfiguration(
+    override val lifecycleOwner: LifecycleOwner,
+    override val inflater: LayoutInflater,
+    override val container: ViewGroup?
+) : LifecycleViewMvcConfiguration

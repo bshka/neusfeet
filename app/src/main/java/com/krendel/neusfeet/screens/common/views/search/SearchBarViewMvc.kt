@@ -1,19 +1,17 @@
 package com.krendel.neusfeet.screens.common.views.search
 
 import android.text.Editable
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSearchBarBinding
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
+import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class SearchBarViewMvc(
-    inflater: LayoutInflater,
-    container: ViewGroup?
-) : BaseViewMvc<ViewSearchBarBinding, SearchBarViewActions>(inflater, container) {
+    configuration: ViewMvcConfiguration
+) : BaseViewMvc<ViewMvcConfiguration, ViewSearchBarBinding, SearchBarViewActions>(configuration) {
 
     override val layout: Int = R.layout.view_search_bar
 

@@ -1,10 +1,8 @@
 package com.krendel.neusfeet.screens.home
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.krendel.neusfeet.screens.common.BaseFragment
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -13,11 +11,8 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
 
     override val viewModel: HomeFragmentViewModel by viewModel()
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        lifecycleOwner: LifecycleOwner
-    ): HomeViewMvc = get { parametersOf(inflater, container, lifecycleOwner) }
+    override fun createView(configuration: LifecycleViewMvcConfiguration): HomeViewMvc =
+        get { parametersOf(configuration) }
 
     override fun subscribeToViewModel(viewModel: HomeFragmentViewModel) {
         observe(viewModel.eventsObservable) {

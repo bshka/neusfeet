@@ -1,7 +1,5 @@
 package com.krendel.neusfeet.screens.common.views.articles
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.ViewFlipper
 import androidx.databinding.ObservableField
 import androidx.paging.PagedList
@@ -14,12 +12,12 @@ import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
 import com.krendel.neusfeet.screens.common.switchToChild
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
+import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
 import io.reactivex.subjects.PublishSubject
 
 class ArticlesListViewMvc(
-    inflater: LayoutInflater,
-    container: ViewGroup?
-) : BaseViewMvc<ViewArticlesListBinding, ViewMvcActions>(inflater, container) {
+    configuration: ViewMvcConfiguration
+) : BaseViewMvc<ViewMvcConfiguration, ViewArticlesListBinding, ViewMvcActions>(configuration) {
 
     override val layout: Int = R.layout.view_articles_list
     val recyclerData = ObservableField<PagedList<ArticleItemViewModel>>()

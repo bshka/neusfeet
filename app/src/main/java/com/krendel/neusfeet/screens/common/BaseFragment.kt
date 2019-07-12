@@ -8,13 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.krendel.neusfeet.common.safetySubscribe
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
-import com.krendel.neusfeet.screens.common.views.ViewMvc
+import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
+import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvcConfiguration
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
-abstract class BaseFragment<ViewModel : BaseActionsViewModel<*>, ViewMvcType : ViewMvc> : Fragment() {
+abstract class BaseFragment<ViewModel : BaseActionsViewModel<*>, ViewMvcType : BaseLifecycleViewMvc<*, *, *>> :
+    Fragment() {
 
     abstract val viewModel: ViewModel
 
@@ -28,15 +31,11 @@ abstract class BaseFragment<ViewModel : BaseActionsViewModel<*>, ViewMvcType : V
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewMvc = createView(inflater, container, viewLifecycleOwner)
+        viewMvc = createView(BaseLifecycleViewMvcConfiguration(viewLifecycleOwner, inflater, container))
         return viewMvc.rootView
     }
 
-    protected abstract fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        lifecycleOwner: LifecycleOwner
-    ): ViewMvcType
+    protected abstract fun createView(configuration: LifecycleViewMvcConfiguration): ViewMvcType
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

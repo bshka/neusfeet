@@ -1,12 +1,7 @@
 package com.krendel.neusfeet.common.di
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleOwner
 import com.google.gson.GsonBuilder
 import com.krendel.neusfeet.BuildConfig
-import com.krendel.neusfeet.model.Article
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
@@ -14,11 +9,14 @@ import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
 import com.krendel.neusfeet.screens.bookmarks.BookmarksFragmentViewModel
 import com.krendel.neusfeet.screens.bookmarks.BookmarksViewMvc
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
 import com.krendel.neusfeet.screens.main.MainViewMvc
+import com.krendel.neusfeet.screens.main.MainViewMvcConfiguration
 import com.krendel.neusfeet.screens.preview.PreviewFragmentViewModel
+import com.krendel.neusfeet.screens.preview.PreviewViewConfiguration
 import com.krendel.neusfeet.screens.preview.PreviewViewMvc
 import com.krendel.neusfeet.screens.search.SearchFragmentViewModel
 import com.krendel.neusfeet.screens.search.SearchViewMvc
@@ -89,34 +87,22 @@ val repoModule = module {
 val viewModule = module {
 
     // article view
-    factory { (article: Article, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        PreviewViewMvc(article, inflater, container, lifecycleOwner)
-    }
+    factory { (configuration: PreviewViewConfiguration) -> PreviewViewMvc(configuration) }
 
     // settings view
-    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        SettingsViewMvc(inflater, container, lifecycleOwner)
-    }
+    factory { (configuration: LifecycleViewMvcConfiguration) -> SettingsViewMvc(configuration) }
 
     // bookmarks view
-    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        BookmarksViewMvc(inflater, container, lifecycleOwner)
-    }
+    factory { (configuration: LifecycleViewMvcConfiguration) -> BookmarksViewMvc(configuration) }
 
     // search view
-    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        SearchViewMvc(inflater, container, lifecycleOwner)
-    }
+    factory { (configuration: LifecycleViewMvcConfiguration) -> SearchViewMvc(configuration) }
 
     // home view
-    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        HomeViewMvc(inflater, container, lifecycleOwner)
-    }
+    factory { (configuration: LifecycleViewMvcConfiguration) -> HomeViewMvc(configuration) }
 
     // main view
-    factory { (fragmentManager: FragmentManager, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        MainViewMvc(fragmentManager, inflater, container, lifecycleOwner)
-    }
+    factory { (configuration: MainViewMvcConfiguration) -> MainViewMvc(configuration) }
 
 }
 

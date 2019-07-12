@@ -1,26 +1,24 @@
 package com.krendel.neusfeet.screens.search
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSearchBinding
 import com.krendel.neusfeet.model.Article
 import com.krendel.neusfeet.screens.common.getStatusBarHeight
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
+import com.krendel.neusfeet.screens.common.views.BaseViewMvcConfiguration
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.views.articles.ArticlesListActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticlesListViewMvc
 import com.krendel.neusfeet.screens.common.views.search.SearchBarViewActions
+import com.krendel.neusfeet.screens.common.views.search.SearchBarViewMvc
 
 class SearchViewMvc(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    lifecycleOwner: LifecycleOwner
-) : BaseLifecycleViewMvc<ViewSearchBinding, SearchViewActions>(inflater, container, lifecycleOwner) {
+    configuration: LifecycleViewMvcConfiguration
+) : BaseLifecycleViewMvc<LifecycleViewMvcConfiguration, ViewSearchBinding, SearchViewActions>(configuration) {
 
     override val layout: Int = R.layout.view_search
 
@@ -28,15 +26,16 @@ class SearchViewMvc(
         context.getStatusBarHeight()
     }
 
-    private val articlesListViewMvc = ArticlesListViewMvc(inflater, rootContainer)
+    private val articlesListViewMvc: ArticlesListViewMvc
 
     override fun bindViewModel(dataBinding: ViewSearchBinding) {
         dataBinding.viewModel = this
     }
 
     init {
-        val searchBarViewMvc =
-            com.krendel.neusfeet.screens.common.views.search.SearchBarViewMvc(inflater, rootContainer)
+        val innerConfiguration = BaseViewMvcConfiguration(configuration.inflater, rootContainer)
+        articlesListViewMvc = ArticlesListViewMvc(innerConfiguration)
+        val searchBarViewMvc = SearchBarViewMvc(innerConfiguration)
         rootContainer.addView(searchBarViewMvc.rootView)
         rootContainer.addView(articlesListViewMvc.rootView)
 

@@ -1,10 +1,8 @@
 package com.krendel.neusfeet.screens.search
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.krendel.neusfeet.screens.common.BaseFragment
+import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -13,11 +11,8 @@ class SearchFragment : BaseFragment<SearchFragmentViewModel, SearchViewMvc>() {
 
     override val viewModel: SearchFragmentViewModel by viewModel()
 
-    override fun createView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        lifecycleOwner: LifecycleOwner
-    ): SearchViewMvc = get { parametersOf(inflater, container, lifecycleOwner) }
+    override fun createView(configuration: LifecycleViewMvcConfiguration): SearchViewMvc =
+        get { parametersOf(configuration) }
 
     override fun subscribeToViewModel(viewModel: SearchFragmentViewModel) {
         observe(viewModel.eventsObservable) {

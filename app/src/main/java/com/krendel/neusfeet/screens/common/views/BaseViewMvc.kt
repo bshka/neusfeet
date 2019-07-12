@@ -16,9 +16,8 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import timber.log.Timber
 
-abstract class BaseViewMvc<BindingType : ViewDataBinding, ActionsType : ViewMvcActions>(
-    protected val inflater: LayoutInflater,
-    container: ViewGroup?
+abstract class BaseViewMvc<out Configuration : ViewMvcConfiguration, BindingType : ViewDataBinding, ActionsType : ViewMvcActions>(
+    protected val configuration: Configuration
 ) : ViewMvc {
 
     /**
@@ -31,7 +30,8 @@ abstract class BaseViewMvc<BindingType : ViewDataBinding, ActionsType : ViewMvcA
 
     @Suppress("LeakingThis")
     protected val dataBinding: BindingType by lazy {
-        val binding = DataBindingUtil.inflate(inflater, layout, container, false) as BindingType
+        val binding =
+            DataBindingUtil.inflate(configuration.inflater, layout, configuration.container, false) as BindingType
         bindViewModel(binding)
         binding
     }
@@ -95,3 +95,13 @@ fun <T : ViewMvcActions> Observable<out T>.registerObserver(eventSubject: Subjec
         { eventSubject.onSubscribe(it) }
     )
 }
+
+interface ViewMvcConfiguration {
+    val inflater: LayoutInflater
+    val container: ViewGroup?
+}
+
+data class BaseViewMvcConfiguration(
+    override val inflater: LayoutInflater,
+    override val container: ViewGroup?
+) : ViewMvcConfiguration
