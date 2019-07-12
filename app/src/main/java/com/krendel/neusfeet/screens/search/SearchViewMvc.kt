@@ -17,10 +17,10 @@ import com.krendel.neusfeet.screens.common.views.articles.ArticlesListViewMvc
 import com.krendel.neusfeet.screens.common.views.search.SearchBarViewActions
 
 class SearchViewMvc(
-    lifecycleOwner: LifecycleOwner,
     inflater: LayoutInflater,
-    container: ViewGroup?
-) : BaseLifecycleViewMvc<ViewSearchBinding, SearchViewActions>(lifecycleOwner, inflater, container) {
+    container: ViewGroup?,
+    lifecycleOwner: LifecycleOwner
+) : BaseLifecycleViewMvc<ViewSearchBinding, SearchViewActions>(inflater, container, lifecycleOwner) {
 
     override val layout: Int = R.layout.view_search
 

@@ -1,4 +1,4 @@
-package com.krendel.neusfeet.screens.bookmarks
+package com.krendel.neusfeet.screens.settings
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,28 +8,28 @@ import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class BookmarksFragment : BaseFragment<BookmarksFragmentViewModel, BookmarksViewMvc>() {
+class SettingsFragment : BaseFragment<SettingsFragmentViewModel, SettingsViewMvc>() {
 
-    override val viewModel: BookmarksFragmentViewModel by viewModel()
+    override val viewModel: SettingsFragmentViewModel by viewModel()
 
     override fun createView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         lifecycleOwner: LifecycleOwner
-    ): BookmarksViewMvc = get { parametersOf(inflater, container, lifecycleOwner) }
+    ): SettingsViewMvc = get { parametersOf(inflater, container, lifecycleOwner) }
 
-    override fun subscribeToViewModel(viewModel: BookmarksFragmentViewModel) {
+    override fun subscribeToViewModel(viewModel: SettingsFragmentViewModel) {
         observe(viewModel.eventsObservable) {
-            // TODO observe view model actions
+            // TODO actions for view model
             when (it) {
 
             }
         }
     }
 
-    override fun subscribeToView(viewMvc: BookmarksViewMvc) {
+    override fun subscribeToView(viewMvc: SettingsViewMvc) {
         observe(viewMvc.eventsObservable) {
-            // TODO observe view mvc actions
+            // TODO actions for view
             when (it) {
 
             }

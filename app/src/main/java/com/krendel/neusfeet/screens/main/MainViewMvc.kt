@@ -13,10 +13,10 @@ import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 
 class MainViewMvc(
     private val fragmentManager: FragmentManager,
-    lifecycleOwner: LifecycleOwner,
     inflater: LayoutInflater,
-    container: ViewGroup?
-) : BaseLifecycleViewMvc<ViewMainBinding, MainViewActions>(lifecycleOwner, inflater, container) {
+    container: ViewGroup?,
+    lifecycleOwner: LifecycleOwner
+) : BaseLifecycleViewMvc<ViewMainBinding, MainViewActions>(inflater, container, lifecycleOwner) {
 
     override val layout: Int = R.layout.view_main
 

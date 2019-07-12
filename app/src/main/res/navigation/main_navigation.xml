@@ -9,7 +9,7 @@
         android:id="@+id/home"
         android:name="com.krendel.neusfeet.screens.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/view_home" >
+        tools:layout="@layout/view_home">
         <action
             android:id="@+id/action_home_to_preview"
             app:destination="@id/preview"
@@ -19,7 +19,7 @@
         android:id="@+id/search"
         android:name="com.krendel.neusfeet.screens.search.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/view_search" >
+        tools:layout="@layout/view_search">
         <action
             android:id="@+id/action_search_to_preview"
             app:destination="@id/preview"
@@ -29,9 +29,19 @@
         android:id="@+id/preview"
         android:name="com.krendel.neusfeet.screens.preview.PreviewFragment"
         android:label="PreviewFragment"
-        tools:layout="@layout/view_article_preview" >
+        tools:layout="@layout/view_article_preview">
         <argument
             android:name="article"
             app:argType="com.krendel.neusfeet.model.Article" />
     </fragment>
+    <fragment
+        android:id="@+id/bookmarks"
+        android:name="com.krendel.neusfeet.screens.bookmarks.BookmarksFragment"
+        android:label="BookmarksFragment"
+        tools:layout="@layout/view_bookmarks" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.krendel.neusfeet.screens.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/view_settings" />
 </navigation>

@@ -18,10 +18,10 @@ import java.util.*
 
 class PreviewViewMvc(
     private val article: Article,
-    lifecycleOwner: LifecycleOwner,
     inflater: LayoutInflater,
-    container: ViewGroup?
-) : BaseLifecycleViewMvc<ViewArticlePreviewBinding, PreviewViewActions>(lifecycleOwner, inflater, container) {
+    container: ViewGroup?,
+    lifecycleOwner: LifecycleOwner
+) : BaseLifecycleViewMvc<ViewArticlePreviewBinding, PreviewViewActions>(inflater, container, lifecycleOwner) {
 
     override val layout: Int = R.layout.view_article_preview
 

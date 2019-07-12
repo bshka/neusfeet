@@ -1,9 +1,7 @@
 package com.krendel.neusfeet.screens.search
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.krendel.neusfeet.screens.common.BaseFragment

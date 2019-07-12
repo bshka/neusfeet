@@ -11,6 +11,8 @@ import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
+import com.krendel.neusfeet.screens.bookmarks.BookmarksFragmentViewModel
+import com.krendel.neusfeet.screens.bookmarks.BookmarksViewMvc
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
@@ -20,6 +22,8 @@ import com.krendel.neusfeet.screens.preview.PreviewFragmentViewModel
 import com.krendel.neusfeet.screens.preview.PreviewViewMvc
 import com.krendel.neusfeet.screens.search.SearchFragmentViewModel
 import com.krendel.neusfeet.screens.search.SearchViewMvc
+import com.krendel.neusfeet.screens.settings.SettingsFragmentViewModel
+import com.krendel.neusfeet.screens.settings.SettingsViewMvc
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -85,23 +89,33 @@ val repoModule = module {
 val viewModule = module {
 
     // article view
-    factory { (article: Article, lifecycleOwner: LifecycleOwner, inflater: LayoutInflater, container: ViewGroup?) ->
-        PreviewViewMvc(article, lifecycleOwner, inflater, container)
+    factory { (article: Article, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
+        PreviewViewMvc(article, inflater, container, lifecycleOwner)
+    }
+
+    // settings view
+    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
+        SettingsViewMvc(inflater, container, lifecycleOwner)
+    }
+
+    // bookmarks view
+    factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
+        BookmarksViewMvc(inflater, container, lifecycleOwner)
     }
 
     // search view
     factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        SearchViewMvc(lifecycleOwner, inflater, container)
+        SearchViewMvc(inflater, container, lifecycleOwner)
     }
 
     // home view
     factory { (inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        HomeViewMvc(lifecycleOwner, inflater, container)
+        HomeViewMvc(inflater, container, lifecycleOwner)
     }
 
     // main view
     factory { (fragmentManager: FragmentManager, inflater: LayoutInflater, container: ViewGroup?, lifecycleOwner: LifecycleOwner) ->
-        MainViewMvc(fragmentManager, lifecycleOwner, inflater, container)
+        MainViewMvc(fragmentManager, inflater, container, lifecycleOwner)
     }
 
 }
@@ -119,5 +133,9 @@ val viewModelModule = module {
     viewModel { SearchFragmentViewModel(get(), get()) }
     // article preview fragment
     viewModel { PreviewFragmentViewModel() }
+    // bookmarks fragment
+    viewModel { BookmarksFragmentViewModel() }
+    // settings fragment
+    viewModel { SettingsFragmentViewModel() }
 
 }

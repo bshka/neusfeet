@@ -17,10 +17,10 @@ import com.krendel.neusfeet.screens.common.views.articles.ArticlesListActions
 import com.krendel.neusfeet.screens.common.views.articles.ArticlesListViewMvc
 
 class HomeViewMvc(
-    lifecycleOwner: LifecycleOwner,
     inflater: LayoutInflater,
-    container: ViewGroup?
-) : BaseLifecycleViewMvc<ViewHomeBinding, HomeViewActions>(lifecycleOwner, inflater, container) {
+    container: ViewGroup?,
+    lifecycleOwner: LifecycleOwner
+) : BaseLifecycleViewMvc<ViewHomeBinding, HomeViewActions>(inflater, container, lifecycleOwner) {
 
     val statusBarHeight: Int by lazy {
         context.getStatusBarHeight()

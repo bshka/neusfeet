@@ -21,7 +21,7 @@ class PreviewFragment : BaseFragment<PreviewFragmentViewModel, PreviewViewMvc>()
         lifecycleOwner: LifecycleOwner
     ): PreviewViewMvc {
         val safeArgs: PreviewFragmentArgs by navArgs()
-        return get { parametersOf(safeArgs.article, lifecycleOwner, inflater, container) }
+        return get { parametersOf(safeArgs.article, inflater, container, lifecycleOwner) }
     }
 
     override fun subscribeToViewModel(viewModel: PreviewFragmentViewModel) {
