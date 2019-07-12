@@ -29,7 +29,7 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
                     viewMvc.errorOccurred(it.throwable)
                 }
                 is HomeViewModelActions.Loading -> {
-                    viewMvc.showLoading(it.show)
+                    viewMvc.showLoading(it.show, it.isInitial)
                 }
             }
         }

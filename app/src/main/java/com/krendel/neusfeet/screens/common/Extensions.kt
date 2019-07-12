@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.View
+import android.widget.ViewFlipper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.request.RequestOptions
@@ -43,4 +44,10 @@ fun Context.getAttributeDimension(attr: Int): Int {
     val dimension = typedArray.getDimensionPixelOffset(0, 0)
     typedArray.recycle()
     return dimension
+}
+
+fun ViewFlipper.switchToChild(index: Int) {
+    if (index != displayedChild) {
+        displayedChild = index
+    }
 }

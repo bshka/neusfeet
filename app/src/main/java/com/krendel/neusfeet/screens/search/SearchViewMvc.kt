@@ -63,12 +63,13 @@ class SearchViewMvc(
     }
 
     fun errorOccurred(throwable: Throwable) {
+        articlesListViewMvc.onError()
         // TODO maybe human-readable error
         Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
-    fun showLoading(show: Boolean) {
-        articlesListViewMvc.showLoading(show)
+    fun showLoading(show: Boolean, isInitial: Boolean) {
+        articlesListViewMvc.showLoading(show, isInitial)
     }
 }
 

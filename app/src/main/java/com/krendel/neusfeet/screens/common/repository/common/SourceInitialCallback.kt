@@ -30,7 +30,8 @@ class SourceInitialCallback<Key, Value>(
 
     private fun stopLoading() = eventSubject.onNext(
         DataSourceActions.Loading(
-            active = false
+            active = false,
+            isInitial = true
         )
     )
 

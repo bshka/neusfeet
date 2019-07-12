@@ -18,21 +18,21 @@ abstract class AppDataSource<Key, Value>(
         get() = eventSubject
 
     final override fun loadInitial(params: LoadInitialParams<Key>, callback: LoadInitialCallback<Key, Value>) {
-        startLoading()
+        startLoading(true)
         compositeDisposable.add(
             loadInitial(params, SourceInitialCallback(callback, eventSubject))
         )
     }
 
     final override fun loadAfter(params: LoadParams<Key>, callback: LoadCallback<Key, Value>) {
-        startLoading()
+        startLoading(false)
         compositeDisposable.add(
             loadAfter(params, SourceLoadCallback(callback, eventSubject))
         )
     }
 
     final override fun loadBefore(params: LoadParams<Key>, callback: LoadCallback<Key, Value>) {
-        startLoading()
+        startLoading(false)
         compositeDisposable.add(
             loadBefore(params, SourceLoadCallback(callback, eventSubject))
         )
@@ -59,9 +59,10 @@ abstract class AppDataSource<Key, Value>(
      */
     abstract fun loadBefore(params: LoadParams<Key>, callback: SourceLoadCallback<Key, Value>): Disposable
 
-    private fun startLoading() = eventSubject.onNext(
+    private fun startLoading(isInitial: Boolean) = eventSubject.onNext(
         DataSourceActions.Loading(
-            active = true
+            active = true,
+            isInitial = isInitial
         )
     )
 }

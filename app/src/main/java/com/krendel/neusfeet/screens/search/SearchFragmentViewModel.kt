@@ -38,7 +38,7 @@ class SearchFragmentViewModel(
             repositoryListing.dataSourceActions
                 .map {
                     when (it) {
-                        is DataSourceActions.Loading -> SearchViewModelActions.Loading(it.active)
+                        is DataSourceActions.Loading -> SearchViewModelActions.Loading(it.active, it.isInitial)
                         is DataSourceActions.Error -> SearchViewModelActions.Error(it.throwable)
                     }
                 }
@@ -65,5 +65,5 @@ class SearchFragmentViewModel(
 sealed class SearchViewModelActions : ViewModelActions {
     data class ArticlesLoaded(val articles: PagedList<ArticleItemViewModel>) : SearchViewModelActions()
     data class Error(val throwable: Throwable) : SearchViewModelActions()
-    data class Loading(val show: Boolean) : SearchViewModelActions()
+    data class Loading(val show: Boolean, val isInitial: Boolean) : SearchViewModelActions()
 }

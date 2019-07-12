@@ -26,7 +26,7 @@ class SearchFragment : BaseFragment<SearchFragmentViewModel, SearchViewMvc>() {
             when (it) {
                 is SearchViewModelActions.ArticlesLoaded -> viewMvc.setArticles(it.articles)
                 is SearchViewModelActions.Error -> viewMvc.errorOccurred(it.throwable)
-                is SearchViewModelActions.Loading -> viewMvc.showLoading(it.show)
+                is SearchViewModelActions.Loading -> viewMvc.showLoading(it.show, it.isInitial)
             }
         }
     }

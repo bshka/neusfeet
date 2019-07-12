@@ -38,7 +38,7 @@ class HomeFragmentViewModel(
             repositoryListing.dataSourceActions
                 .map {
                     when (it) {
-                        is DataSourceActions.Loading -> HomeViewModelActions.Loading(it.active)
+                        is DataSourceActions.Loading -> HomeViewModelActions.Loading(it.active, it.isInitial)
                         is DataSourceActions.Error -> HomeViewModelActions.Error(it.throwable)
                     }
                 }
@@ -60,5 +60,5 @@ class HomeFragmentViewModel(
 sealed class HomeViewModelActions : ViewModelActions {
     data class ArticlesLoaded(val articles: PagedList<ArticleItemViewModel>) : HomeViewModelActions()
     data class Error(val throwable: Throwable) : HomeViewModelActions()
-    data class Loading(val show: Boolean) : HomeViewModelActions()
+    data class Loading(val show: Boolean, val isInitial: Boolean) : HomeViewModelActions()
 }

@@ -55,11 +55,12 @@ class HomeViewMvc(
 
     fun errorOccurred(throwable: Throwable) {
         // TODO maybe human-readable error
+        articlesListViewMvc.onError()
         Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
-    fun showLoading(show: Boolean) {
-        articlesListViewMvc.showLoading(show)
+    fun showLoading(isLoading: Boolean, isInitial: Boolean) {
+        articlesListViewMvc.showLoading(isLoading, isInitial)
     }
 
     fun setArticles(articles: PagedList<ArticleItemViewModel>) {

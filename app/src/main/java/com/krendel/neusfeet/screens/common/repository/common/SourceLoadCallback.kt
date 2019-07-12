@@ -14,18 +14,19 @@ class SourceLoadCallback<Key, Value>(
 ) : PageKeyedDataSource.LoadCallback<Key, Value>() {
 
     override fun onResult(data: List<Value>, adjacentPageKey: Key?) {
-        callback.onResult(data, adjacentPageKey)
         stopLoading()
+        callback.onResult(data, adjacentPageKey)
     }
 
     fun onError(throwable: Throwable) {
-        error(throwable)
         stopLoading()
+        error(throwable)
     }
 
     private fun stopLoading() = eventSubject.onNext(
         DataSourceActions.Loading(
-            active = false
+            active = false,
+            isInitial = false
         )
     )
 
