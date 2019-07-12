@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 
-abstract class BaseLifecycleViewMvc<out C : LifecycleViewMvcConfiguration, B : ViewDataBinding, A : ViewMvcActions>(
+abstract class BaseLifecycleViewMvc<out C : LifecycleViewMvcConfiguration, B : ViewDataBinding, in A : ViewMvcActions>(
     configuration: C
 ) : BaseViewMvc<C, B, A>(configuration), LifecycleObserver {
 

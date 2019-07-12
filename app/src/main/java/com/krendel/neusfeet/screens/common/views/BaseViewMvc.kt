@@ -16,14 +16,14 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import timber.log.Timber
 
-abstract class BaseViewMvc<out Configuration : ViewMvcConfiguration, BindingType : ViewDataBinding, ActionsType : ViewMvcActions>(
+abstract class BaseViewMvc<out Configuration : ViewMvcConfiguration, BindingType : ViewDataBinding, in ActionsType : ViewMvcActions>(
     protected val configuration: Configuration
 ) : ViewMvc {
 
     /**
      * Fragment or activity should subscribe on this observable for working with ViewMvc events
      * */
-    val eventsObservable: Observable<ActionsType> get() = eventSubject
+    val eventsObservable: Observable<in ActionsType> get() = eventSubject
 
     override val rootView: View
         get() = dataBinding.root
