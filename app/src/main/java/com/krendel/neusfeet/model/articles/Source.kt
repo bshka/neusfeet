@@ -1,4 +1,4 @@
-package com.krendel.neusfeet.model
+package com.krendel.neusfeet.model.articles
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

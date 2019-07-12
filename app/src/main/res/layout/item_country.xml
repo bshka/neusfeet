@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.krendel.neusfeet.screens.settings.items.CountryItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="?selectableItemBackground"
+        android:onClickListener="@{viewModel.onClick}"
+        android:orientation="horizontal">
+
+        <ImageView
+            countryFlag="@{viewModel.countryCode}"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/placeholder" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/sfui_medium"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.countryName}"
+            android:textSize="12sp"
+            tools:text="Australia" />
+
+    </LinearLayout>
+</layout>

@@ -7,7 +7,7 @@ import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LifecycleOwner
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewArticlePreviewBinding
-import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.screens.common.binding.Listener
 import com.krendel.neusfeet.screens.common.getAttributeDimension
 import com.krendel.neusfeet.screens.common.getStatusBarHeight

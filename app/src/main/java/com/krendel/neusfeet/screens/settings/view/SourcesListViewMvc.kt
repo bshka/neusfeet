@@ -1,10 +1,10 @@
-package com.krendel.neusfeet.screens.common.views.articles
+package com.krendel.neusfeet.screens.settings.view
 
 import androidx.databinding.ObservableField
 import androidx.paging.PagedList
 import com.krendel.neusfeet.R
-import com.krendel.neusfeet.databinding.ViewArticlesListBinding
-import com.krendel.neusfeet.model.articles.Article
+import com.krendel.neusfeet.databinding.ViewSourcesListBinding
+import com.krendel.neusfeet.model.source.Source
 import com.krendel.neusfeet.screens.common.list.AdapterObserver
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
@@ -12,23 +12,24 @@ import com.krendel.neusfeet.screens.common.switchToChild
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
+import com.krendel.neusfeet.screens.settings.items.SourceItemActions
+import com.krendel.neusfeet.screens.settings.items.SourceItemViewModel
 import io.reactivex.subjects.PublishSubject
 
-class ArticlesListViewMvc(
+class SourcesListViewMvc(
     configuration: ViewMvcConfiguration
-) : BaseViewMvc<ViewMvcConfiguration, ViewArticlesListBinding, ViewMvcActions>(configuration) {
+) : BaseViewMvc<ViewMvcConfiguration, ViewSourcesListBinding, SourcesListActions>(configuration) {
 
-    override val layout: Int = R.layout.view_articles_list
-    val recyclerData = ObservableField<PagedList<ArticleItemViewModel>>()
-
+    val recyclerData = ObservableField<PagedList<SourceItemViewModel>>()
     private val listEventsObserver = PublishSubject.create<ListItemActions>()
 
-    override fun bindViewModel(dataBinding: ViewArticlesListBinding) {
+    override val layout: Int = R.layout.view_sources_list
+
+    override fun bindViewModel(dataBinding: ViewSourcesListBinding) {
         dataBinding.viewModel = this
     }
 
     init {
-        dataBinding.recyclerView.addItemDecoration(ArticlesItemsDecorator())
         val adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
         dataBinding.recyclerView.adapter = adapter
         adapter.registerAdapterDataObserver(
@@ -37,16 +38,13 @@ class ArticlesListViewMvc(
                 adapter
             )
         )
-        dataBinding.refreshLayout.setOnRefreshListener {
-            sendEvent(ArticlesListActions.Refresh)
-        }
+        dataBinding.refreshLayout.setOnRefreshListener { sendEvent(SourcesListActions.Refresh) }
 
         registerActionsSource(
             listEventsObserver.map {
                 when (it) {
-                    is ArticleItemViewActions.Clicked -> ArticlesListActions.ArticleClicked(
-                        it.article
-                    )
+                    is SourceItemActions.SourceClicked -> SourcesListActions.SourceClicked(it.source)
+                    is SourceItemActions.ToggleSource -> SourcesListActions.ToggleSource(it.source, it.isChecked)
                     else -> throw IllegalArgumentException("Unknown action!")
                 }
             }
@@ -75,15 +73,14 @@ class ArticlesListViewMvc(
         }
     }
 
-    fun setArticles(articles: PagedList<ArticleItemViewModel>) {
+    fun setSources(sources: PagedList<SourceItemViewModel>) {
         dataBinding.refreshLayout.isRefreshing = false
-
-        // TODO need to think of how to update data list. before invalidation list can be updated on it's own, after - needs to be changed with a new one
-        recyclerData.set(articles)
+        recyclerData.set(sources)
     }
 }
 
-sealed class ArticlesListActions : ViewMvcActions {
-    data class ArticleClicked(val article: Article) : ArticlesListActions()
-    object Refresh : ArticlesListActions()
+sealed class SourcesListActions : ViewMvcActions {
+    object Refresh : SourcesListActions()
+    data class SourceClicked(val source: Source) : SourcesListActions()
+    data class ToggleSource(val source: Source, val isSelected: Boolean) : SourcesListActions()
 }

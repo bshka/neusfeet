@@ -4,7 +4,7 @@ import android.widget.Toast
 import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSearchBinding
-import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.screens.common.getStatusBarHeight
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.BaseViewMvcConfiguration

@@ -11,4 +11,8 @@
     <string name="read_article">Read article</string>
     <string name="empty_articles">Nothing to show…</string>
 
+    <string name="category">Category</string>
+    <string name="country">Country</string>
+    <string name="language">Language</string>
+
 </resources>

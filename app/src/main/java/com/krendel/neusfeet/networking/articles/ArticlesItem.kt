@@ -1,7 +1,7 @@
 package com.krendel.neusfeet.networking.articles
 
 import com.google.gson.annotations.SerializedName
-import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.model.articles.Article
 import java.util.*
 
 data class ArticlesItem(

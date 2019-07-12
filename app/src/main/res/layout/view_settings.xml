@@ -2,21 +2,54 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.krendel.neusfeet.screens.settings.SettingsViewMvc" />
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:text="Settings"
-            android:gravity="center"
-            android:layout_height="match_parent" />
+            android:layout_height="?actionBarSize"
+            android:background="@color/alabaster"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:fontFamily="@font/sfui_bold"
+                android:gravity="center"
+                android:text="@string/country"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:fontFamily="@font/sfui_bold"
+                android:gravity="center"
+                android:text="@string/language"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackground"
+                android:fontFamily="@font/sfui_bold"
+                android:gravity="center"
+                android:text="@string/category"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

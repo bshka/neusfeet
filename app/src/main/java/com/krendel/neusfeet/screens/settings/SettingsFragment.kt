@@ -26,7 +26,18 @@ class SettingsFragment : BaseFragment<SettingsFragmentViewModel, SettingsViewMvc
         observe(viewMvc.eventsObservable) {
             // TODO actions for view
             when (it) {
-
+                is SettingsViewActions.Refresh -> {
+                }
+                is SettingsViewActions.ToggleSource -> {
+                }
+                is SettingsViewActions.SourceClicked -> {
+                }
+                is SettingsViewActions.CategorySelected -> {
+                }
+                is SettingsViewActions.CountrySelected -> {
+                }
+                is SettingsViewActions.LanguageSelected -> {
+                }
             }
         }
     }

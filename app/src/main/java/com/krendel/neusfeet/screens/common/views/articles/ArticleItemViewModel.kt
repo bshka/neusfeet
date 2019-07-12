@@ -1,7 +1,7 @@
 package com.krendel.neusfeet.screens.common.views.articles
 
 import com.krendel.neusfeet.R
-import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.screens.common.binding.Listener
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.ListItemViewMvc

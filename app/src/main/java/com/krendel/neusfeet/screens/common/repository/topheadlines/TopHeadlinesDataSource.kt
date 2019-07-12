@@ -1,6 +1,6 @@
 package com.krendel.neusfeet.screens.common.repository.topheadlines
 
-import com.krendel.neusfeet.model.Article
+import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.articles.toArticle
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider

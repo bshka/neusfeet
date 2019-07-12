@@ -32,7 +32,7 @@
         tools:layout="@layout/view_article_preview">
         <argument
             android:name="article"
-            app:argType="com.krendel.neusfeet.model.Article" />
+            app:argType="com.krendel.neusfeet.model.articles.Article" />
     </fragment>
     <fragment
         android:id="@+id/bookmarks"

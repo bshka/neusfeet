@@ -7,9 +7,13 @@ import android.view.View
 import android.widget.ViewFlipper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.common.NewsApplication
+
+fun RequestManager.countryFlag(code: String?): RequestBuilder<Drawable> =
+    this.load("https://lipis.github.io/flag-icon-css/flags/4x3/$code.svg")
 
 fun RequestBuilder<Drawable>.fitAndCrop(): RequestBuilder<Drawable> =
     this.apply(RequestOptions().fitCenter().centerCrop())

@@ -1,7 +1,7 @@
 package com.krendel.neusfeet.networking.articles
 
 import com.google.gson.annotations.SerializedName
-import com.krendel.neusfeet.model.Source
+import com.krendel.neusfeet.model.articles.Source
 
 data class SourceSchema(
 
@@ -12,4 +12,5 @@ data class SourceSchema(
 	val id: String? = null
 )
 
-fun SourceSchema.toSource(): Source = Source(name, id)
+fun SourceSchema.toSource(): Source =
+    Source(name, id)
