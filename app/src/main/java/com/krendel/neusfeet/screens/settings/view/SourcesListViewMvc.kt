@@ -1,17 +1,17 @@
 package com.krendel.neusfeet.screens.settings.view
 
 import androidx.databinding.ObservableField
-import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSourcesListBinding
-import com.krendel.neusfeet.model.source.Source
+import com.krendel.neusfeet.local.source.Source
 import com.krendel.neusfeet.screens.common.list.AdapterObserver
 import com.krendel.neusfeet.screens.common.list.ListItemActions
-import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
+import com.krendel.neusfeet.screens.common.list.RecyclerBindingAdapter
 import com.krendel.neusfeet.screens.common.switchToChild
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
+import com.krendel.neusfeet.screens.common.views.CardItemsDecorator
 import com.krendel.neusfeet.screens.settings.items.SourceItemActions
 import com.krendel.neusfeet.screens.settings.items.SourceItemViewModel
 import io.reactivex.subjects.PublishSubject
@@ -20,7 +20,7 @@ class SourcesListViewMvc(
     configuration: ViewMvcConfiguration
 ) : BaseViewMvc<ViewMvcConfiguration, ViewSourcesListBinding, SourcesListActions>(configuration) {
 
-    val recyclerData = ObservableField<PagedList<SourceItemViewModel>>()
+    val recyclerData = ObservableField<List<SourceItemViewModel>>()
     private val listEventsObserver = PublishSubject.create<ListItemActions>()
 
     override val layout: Int = R.layout.view_sources_list
@@ -30,8 +30,9 @@ class SourcesListViewMvc(
     }
 
     init {
-        val adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
+        val adapter = RecyclerBindingAdapter(eventsObserver = listEventsObserver)
         dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(CardItemsDecorator())
         adapter.registerAdapterDataObserver(
             AdapterObserver(
                 dataBinding.viewFlipper,
@@ -73,7 +74,7 @@ class SourcesListViewMvc(
         }
     }
 
-    fun setSources(sources: PagedList<SourceItemViewModel>) {
+    fun setSources(sources: List<SourceItemViewModel>) {
         dataBinding.refreshLayout.isRefreshing = false
         recyclerData.set(sources)
     }

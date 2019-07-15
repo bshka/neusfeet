@@ -15,4 +15,6 @@
     <string name="country">Country</string>
     <string name="language">Language</string>
 
+    <string name="open_in_browser">Open in browser</string>
+
 </resources>

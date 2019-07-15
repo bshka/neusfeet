@@ -2,6 +2,7 @@ package com.krendel.neusfeet.common.di
 
 import com.google.gson.GsonBuilder
 import com.krendel.neusfeet.BuildConfig
+import com.krendel.neusfeet.local.AppDatabase
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.interceptor.ApiInterceptor
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
@@ -37,6 +38,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 private val RETROFIT = StringQualifier("RETROFIT")
+private val DATABASE = StringQualifier("DATABASE")
 
 val rxJava = module {
 
@@ -78,9 +80,17 @@ val rxJava = module {
 
 }
 
+val databaseModule = module {
+
+    single(DATABASE) { AppDatabase.getInstance(androidContext()) }
+
+    single { (get(DATABASE) as AppDatabase).sourceDao() }
+
+}
+
 val repoModule = module {
 
-    single { RepositoryFactory(get(), get()) }
+    single { RepositoryFactory(get(), get(), get()) }
 
 }
 
@@ -122,6 +132,6 @@ val viewModelModule = module {
     // bookmarks fragment
     viewModel { BookmarksFragmentViewModel() }
     // settings fragment
-    viewModel { SettingsFragmentViewModel() }
+    viewModel { SettingsFragmentViewModel(get(), get()) }
 
 }

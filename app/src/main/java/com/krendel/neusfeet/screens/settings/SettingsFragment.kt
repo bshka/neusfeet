@@ -1,5 +1,7 @@
 package com.krendel.neusfeet.screens.settings
 
+import android.content.Intent
+import android.net.Uri
 import com.krendel.neusfeet.screens.common.BaseFragment
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import org.koin.android.ext.android.get
@@ -15,22 +17,28 @@ class SettingsFragment : BaseFragment<SettingsFragmentViewModel, SettingsViewMvc
 
     override fun subscribeToViewModel(viewModel: SettingsFragmentViewModel) {
         observe(viewModel.eventsObservable) {
-            // TODO actions for view model
             when (it) {
-
+                is SettingsViewModelActions.Loading -> viewMvc.showLoading(it.show, it.isInitial)
+                is SettingsViewModelActions.Error -> viewMvc.onError(it.throwable)
+                is SettingsViewModelActions.SourcesLoaded -> viewMvc.setSources(it.sources)
             }
         }
     }
 
     override fun subscribeToView(viewMvc: SettingsViewMvc) {
         observe(viewMvc.eventsObservable) {
-            // TODO actions for view
             when (it) {
-                is SettingsViewActions.Refresh -> {
-                }
+                is SettingsViewActions.Refresh -> viewModel.refresh()
                 is SettingsViewActions.ToggleSource -> {
+                    if (it.isSelected) {
+                        viewModel.addSelection(it.source)
+                    } else {
+                        viewModel.removeSelection(it.source)
+                    }
                 }
                 is SettingsViewActions.SourceClicked -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.source.url))
+                    startActivity(intent)
                 }
                 is SettingsViewActions.CategorySelected -> {
                 }

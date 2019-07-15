@@ -5,7 +5,7 @@ import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
-import com.krendel.neusfeet.screens.common.repository.common.Listing
+import com.krendel.neusfeet.screens.common.repository.common.PagedListing
 import com.krendel.neusfeet.screens.common.repository.topheadlines.TopHeadlinesFetchConfiguration
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
@@ -18,7 +18,7 @@ class HomeFragmentViewModel(
 ) : BaseActionsViewModel<HomeViewModelActions>() {
 
     private val articlesSubject: BehaviorSubject<HomeViewModelActions.ArticlesLoaded> = BehaviorSubject.create()
-    private val repositoryListing: Listing<ArticleItemViewModel>
+    private val repositoryListing: PagedListing<ArticleItemViewModel>
 
     private val configuration = TopHeadlinesFetchConfiguration(20)
 

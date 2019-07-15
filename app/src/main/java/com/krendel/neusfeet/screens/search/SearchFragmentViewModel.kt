@@ -4,7 +4,7 @@ import androidx.paging.PagedList
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
-import com.krendel.neusfeet.screens.common.repository.common.Listing
+import com.krendel.neusfeet.screens.common.repository.common.PagedListing
 import com.krendel.neusfeet.screens.common.repository.everything.EverythingFetchConfiguration
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
@@ -18,7 +18,7 @@ class SearchFragmentViewModel(
 ) : BaseActionsViewModel<SearchViewModelActions>() {
 
     private val articlesSubject: BehaviorSubject<SearchViewModelActions.ArticlesLoaded> = BehaviorSubject.create()
-    private var repositoryListing: Listing<ArticleItemViewModel>
+    private val repositoryListing: PagedListing<ArticleItemViewModel>
 
     private val configuration = EverythingFetchConfiguration(20, "")
 

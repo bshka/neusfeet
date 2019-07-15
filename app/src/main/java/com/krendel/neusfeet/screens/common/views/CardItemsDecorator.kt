@@ -1,11 +1,11 @@
-package com.krendel.neusfeet.screens.common.views.articles
+package com.krendel.neusfeet.screens.common.views
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.krendel.neusfeet.screens.common.applyDP
 
-class ArticlesItemsDecorator: RecyclerView.ItemDecoration() {
+class CardItemsDecorator: RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val pos = parent.getChildAdapterPosition(view)

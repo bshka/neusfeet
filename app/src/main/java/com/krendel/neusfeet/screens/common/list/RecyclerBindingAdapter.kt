@@ -4,23 +4,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.paging.PagedList
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.subjects.Subject
 
-class RecyclerPagingBindingAdapter(
-    items: PagedList<ListItemViewMvc<*>>? = null,
+class RecyclerBindingAdapter(
+    items: List<ListItemViewMvc<*>>? = null,
     private val eventsObserver: Subject<ListItemActions>
-) : PagedListAdapter<ListItemViewMvc<*>, ViewHolderBinding<*>>(DIFF_CALLBACK) {
+) : RecyclerView.Adapter<ViewHolderBinding<*>>() {
+
+    private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
 
     init {
-        submitList(items)
+        differ.submitList(items)
     }
 
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-     *  RecyclerView.Adapter methods
-    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    override fun getItemViewType(position: Int): Int = differ.currentList[position].viewType
+
+    override fun getItemCount(): Int = differ.currentList.size
+
+    override fun getItemId(position: Int): Long = differ.currentList[position].id
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderBinding<*> {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,15 +32,13 @@ class RecyclerPagingBindingAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolderBinding<*>, position: Int) =
-        holder.bind(getItem(position))
+        holder.bind(differ.currentList[position])
 
     override fun onViewRecycled(holder: ViewHolderBinding<*>) = holder.unbind()
 
-    override fun getItemViewType(position: Int): Int = getItem(position)!!.viewType
-
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-     *  Diff util
-    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    fun setItems(items: List<ListItemViewMvc<*>>?) {
+        differ.submitList(items)
+    }
 
     companion object {
         private val DIFF_CALLBACK = DiffCallback()

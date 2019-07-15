@@ -2,10 +2,9 @@ package com.krendel.neusfeet.screens.settings
 
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSettingsBinding
-import com.krendel.neusfeet.model.source.Source
+import com.krendel.neusfeet.local.source.Source
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
 import com.krendel.neusfeet.screens.common.views.BaseViewMvcConfiguration
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
@@ -53,7 +52,7 @@ class SettingsViewMvc(
         Toast.makeText(context, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
     }
 
-    fun setSources(sources: PagedList<SourceItemViewModel>) {
+    fun setSources(sources: List<SourceItemViewModel>) {
         sourcesListView.setSources(sources)
     }
 
@@ -63,7 +62,7 @@ sealed class SettingsViewActions : ViewMvcActions {
     object Refresh : SettingsViewActions()
     data class SourceClicked(val source: Source) : SettingsViewActions()
     data class ToggleSource(val source: Source, val isSelected: Boolean) : SettingsViewActions()
-    data class CountrySelected(val code: String?): SettingsViewActions()
-    data class LanguageSelected(val code: String?): SettingsViewActions()
-    data class CategorySelected(val category: String?): SettingsViewActions()
+    data class CountrySelected(val code: String?) : SettingsViewActions()
+    data class LanguageSelected(val code: String?) : SettingsViewActions()
+    data class CategorySelected(val category: String?) : SettingsViewActions()
 }

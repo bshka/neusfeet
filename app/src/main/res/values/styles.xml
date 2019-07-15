@@ -12,4 +12,8 @@
         <item name="android:windowBackground">@drawable/background_window</item>
     </style>
 
+    <declare-styleable name="CheckableRelativeLayout">
+        <attr name="checked" format="boolean" />
+    </declare-styleable>
+
 </resources>

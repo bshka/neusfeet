@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?selectableItemBackground"
+        android:onClickListener="@{viewModel.onClick}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="@dimen/item_radius"
         app:cardElevation="2dp"
@@ -21,10 +22,10 @@
         app:contentPaddingLeft="16dp"
         app:contentPaddingTop="8dp">
 
-        <RelativeLayout
+        <com.krendel.neusfeet.screens.common.android_views.CheckableRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClickListener="@{viewModel.onClick}">
+            android:checked="@{viewModel.checked}">
 
             <CheckBox
                 android:id="@+id/checkbox"
@@ -32,9 +33,10 @@
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:checked="@{viewModel.isChecked}"
+                android:clickable="false"
                 android:drawablePadding="0dp"
-                android:onCheckedChanged="@{viewModel.checkListener}"
+                android:duplicateParentState="true"
+                android:focusable="false"
                 android:text="" />
 
             <TextView
@@ -54,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name"
-                android:fontFamily="@font/sfui_light"
+                android:fontFamily="@font/sfui_medium"
                 android:text="@{viewModel.country}"
                 android:textColor="@color/french_gray"
                 android:textSize="14sp"
@@ -67,7 +69,7 @@
                 android:layout_below="@id/name"
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/country"
-                android:fontFamily="@font/sfui_light"
+                android:fontFamily="@font/sfui_medium"
                 android:text="@{viewModel.category}"
                 android:textColor="@color/french_gray"
                 android:textSize="14sp"
@@ -80,7 +82,7 @@
                 android:layout_below="@id/name"
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/category"
-                android:fontFamily="@font/sfui_light"
+                android:fontFamily="@font/sfui_medium"
                 android:text="@{viewModel.language}"
                 android:textColor="@color/french_gray"
                 android:textSize="14sp"
@@ -99,7 +101,17 @@
                 android:textSize="12sp"
                 tools:text="Australia's most trusted source of local, national and world news. Comprehensive, independent, in-depth analysis, the latest business, sport, weather and more." />
 
-        </RelativeLayout>
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/description"
+                android:layout_marginStart="-12dp"
+                android:fontFamily="@font/sfui_bold"
+                android:onClickListener="@{viewModel.openSourceInBrowser}"
+                android:text="@string/open_in_browser" />
+
+        </com.krendel.neusfeet.screens.common.android_views.CheckableRelativeLayout>
 
 
     </androidx.cardview.widget.CardView>

@@ -1,15 +1,16 @@
 package com.krendel.neusfeet.screens.settings.items
 
-import android.widget.CompoundButton
+import androidx.databinding.Bindable
+import com.krendel.neusfeet.BR
 import com.krendel.neusfeet.R
-import com.krendel.neusfeet.model.source.Source
+import com.krendel.neusfeet.local.source.Source
 import com.krendel.neusfeet.screens.common.binding.Listener
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.ListItemViewMvc
 
 class SourceItemViewModel(
-    val isChecked: Boolean,
-    source: Source,
+    private var checked: Boolean,
+    private val source: Source,
     val country: String
 ) : ListItemViewMvc<SourceItemActions>() {
 
@@ -20,12 +21,21 @@ class SourceItemViewModel(
     val description = source.description
     val language = source.language
     val category = source.category
-    val checkListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-        sendEvent(SourceItemActions.ToggleSource(source, isChecked))
-    }
     val onClick: Listener = {
+        checked = !checked
+        notifyPropertyChanged(BR.checked)
+        sendEvent(SourceItemActions.ToggleSource(source, checked))
+    }
+    val openSourceInBrowser: Listener = {
         sendEvent(SourceItemActions.SourceClicked(source))
     }
+
+    override fun hasTheSameContent(other: ListItemViewMvc<*>): Boolean {
+        return (other as SourceItemViewModel).source == source && other.checked == checked
+    }
+
+    @Bindable
+    fun getChecked(): Boolean = checked
 }
 
 sealed class SourceItemActions : ListItemActions {

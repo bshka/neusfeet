@@ -4,7 +4,7 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.repository.common.Listing
+import com.krendel.neusfeet.screens.common.repository.common.PagedListing
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import io.reactivex.disposables.CompositeDisposable
 
@@ -15,7 +15,7 @@ class EverythingRepository(
     private val configuration: EverythingFetchConfiguration
 ) {
 
-    fun everything(pageSize: Int): Listing<ArticleItemViewModel> {
+    fun everything(pageSize: Int): PagedListing<ArticleItemViewModel> {
         val sourceFactory = EverythingDataSourceFactory(
             newsApi = newsApi,
             schedulersProvider = schedulersProvider,
@@ -29,7 +29,7 @@ class EverythingRepository(
             .setEnablePlaceholders(false)
             .build()
 
-        return Listing(
+        return PagedListing(
             dataList = RxPagedListBuilder<Int, ArticleItemViewModel>(
                 sourceFactory.map { ArticleItemViewModel(it) },
                 config

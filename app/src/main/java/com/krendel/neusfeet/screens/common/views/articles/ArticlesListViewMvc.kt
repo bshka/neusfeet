@@ -9,6 +9,7 @@ import com.krendel.neusfeet.screens.common.list.AdapterObserver
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
 import com.krendel.neusfeet.screens.common.switchToChild
+import com.krendel.neusfeet.screens.common.views.CardItemsDecorator
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
@@ -28,7 +29,7 @@ class ArticlesListViewMvc(
     }
 
     init {
-        dataBinding.recyclerView.addItemDecoration(ArticlesItemsDecorator())
+        dataBinding.recyclerView.addItemDecoration(CardItemsDecorator())
         val adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
         dataBinding.recyclerView.adapter = adapter
         adapter.registerAdapterDataObserver(
@@ -65,6 +66,9 @@ class ArticlesListViewMvc(
                 }
             }
         } else {
+            if (dataBinding.viewFlipper.displayedChild != 2) {
+                dataBinding.viewFlipper.displayedChild = 2
+            }
             dataBinding.refreshLayout.isRefreshing = show
         }
     }

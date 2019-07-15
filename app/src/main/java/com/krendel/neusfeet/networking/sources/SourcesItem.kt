@@ -1,9 +1,12 @@
 package com.krendel.neusfeet.networking.sources
 
 import com.google.gson.annotations.SerializedName
-import com.krendel.neusfeet.model.source.Source
+import com.krendel.neusfeet.local.source.Source
 
 data class SourcesItem(
+
+    @field:SerializedName("id")
+    val id: String,
 
     @field:SerializedName("country")
     val country: String? = null,
@@ -17,9 +20,6 @@ data class SourcesItem(
     @field:SerializedName("language")
     val language: String? = null,
 
-    @field:SerializedName("id")
-    val id: String? = null,
-
     @field:SerializedName("category")
     val category: String? = null,
 
@@ -28,5 +28,5 @@ data class SourcesItem(
 )
 
 fun SourcesItem.toSource(): Source = Source(
-    country, name, description, language, id, category, url
+    id, country, name, description, language, category, url
 )
