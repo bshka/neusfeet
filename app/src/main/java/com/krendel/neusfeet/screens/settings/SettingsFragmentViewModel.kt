@@ -20,7 +20,7 @@ class SettingsFragmentViewModel(
     private val sourcesPublisher = BehaviorSubject.create<SettingsViewModelActions.SourcesLoaded>()
     private val repositoryListing: Listing<SourceItemViewModel>
 
-    private val configuration = SourcesFetchConfiguration("")
+    private val configuration = SourcesFetchConfiguration()
     val repository = repositoryFactory.sourcesRepository(configuration, disposables)
 
     init {
@@ -58,6 +58,21 @@ class SettingsFragmentViewModel(
 
     fun removeSelection(source: Source) {
         repository.remove(source)
+    }
+
+    fun filterByCountry(code: String?) {
+        configuration.country = code
+        refresh()
+    }
+
+    fun filterByLanguage(code: String?) {
+        configuration.language = code
+        refresh()
+    }
+
+    fun filterByCategory(code: String?) {
+        configuration.category= code
+        refresh()
     }
 
 }

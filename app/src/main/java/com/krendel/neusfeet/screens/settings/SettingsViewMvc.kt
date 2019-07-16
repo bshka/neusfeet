@@ -82,7 +82,7 @@ class SettingsViewMvc(
         sourcesListView.setSources(sources)
     }
 
-    private fun showPopupSelection(view: View, @ArrayRes array: Int, onClick: (code: String) -> Unit) {
+    private fun showPopupSelection(view: View, @ArrayRes array: Int, onClick: (code: String?) -> Unit) {
         val popup = ListPopupWindow(view.context)
         popup.anchorView = view
         popup.setDropDownGravity(Gravity.BOTTOM)
@@ -95,7 +95,9 @@ class SettingsViewMvc(
             )
         )
         popup.setOnItemClickListener { _, _, position, _ ->
-            onClick(arr[position])
+            // first is 'all', so pass null to clear filter
+            val code = if (position == 0) null else arr[position]
+            onClick(code)
             popup.dismiss()
         }
         popup.show()

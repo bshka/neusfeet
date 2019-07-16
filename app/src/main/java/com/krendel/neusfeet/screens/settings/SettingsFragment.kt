@@ -2,7 +2,6 @@ package com.krendel.neusfeet.screens.settings
 
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import com.krendel.neusfeet.screens.common.BaseFragment
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import org.koin.android.ext.android.get
@@ -41,15 +40,9 @@ class SettingsFragment : BaseFragment<SettingsFragmentViewModel, SettingsViewMvc
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.source.url))
                     startActivity(intent)
                 }
-                is SettingsViewActions.CategorySelected -> {
-                    Toast.makeText(context, "category ${it.code}", Toast.LENGTH_SHORT).show()
-                }
-                is SettingsViewActions.CountrySelected -> {
-                    Toast.makeText(context, "country ${it.code}", Toast.LENGTH_SHORT).show()
-                }
-                is SettingsViewActions.LanguageSelected -> {
-                    Toast.makeText(context, "language ${it.code}", Toast.LENGTH_SHORT).show()
-                }
+                is SettingsViewActions.CategorySelected -> viewModel.filterByCategory(it.code)
+                is SettingsViewActions.CountrySelected -> viewModel.filterByCountry(it.code)
+                is SettingsViewActions.LanguageSelected -> viewModel.filterByLanguage(it.code)
             }
         }
     }

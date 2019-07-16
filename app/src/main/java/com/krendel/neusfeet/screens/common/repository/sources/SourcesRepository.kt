@@ -135,8 +135,11 @@ class SourcesRepository(
             }).observeOn(schedulersProvider.computation())
 
     private fun loadSources(): Flowable<List<Source>> =
-        newsApi.sources()
-            .map { it.sources!!.map { schema -> schema.toSource() } }
+        newsApi.sources(
+            category = configuration.category,
+            language = configuration.language,
+            country = configuration.country
+        ).map { it.sources!!.map { schema -> schema.toSource() } }
             .toFlowable()
 
 }
@@ -150,4 +153,8 @@ fun <T> Flowable<out T>.registerObserver(observer: FlowableProcessor<T>): Dispos
     )
 
 
-data class SourcesFetchConfiguration(val query: String)
+data class SourcesFetchConfiguration(
+    var country: String? = null,
+    var language: String? = null,
+    var category: String? = null
+)
