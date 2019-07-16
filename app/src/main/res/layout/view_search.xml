@@ -8,10 +8,17 @@
             type="com.krendel.neusfeet.screens.search.SearchViewMvc" />
     </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="@{viewModel.statusBarHeight}" />
+        android:paddingTop="@{viewModel.statusBarHeight}">
+
+        <LinearLayout
+            android:id="@+id/linear_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

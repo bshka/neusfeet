@@ -38,7 +38,12 @@
         android:id="@+id/bookmarks"
         android:name="com.krendel.neusfeet.screens.bookmarks.BookmarksFragment"
         android:label="BookmarksFragment"
-        tools:layout="@layout/view_bookmarks" />
+        tools:layout="@layout/view_bookmarks" >
+        <action
+            android:id="@+id/action_bookmarks_to_preview"
+            app:destination="@id/preview"
+            app:popUpTo="@+id/bookmarks" />
+    </fragment>
     <fragment
         android:id="@+id/settings"
         android:name="com.krendel.neusfeet.screens.settings.SettingsFragment"

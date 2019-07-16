@@ -2,6 +2,7 @@ package com.krendel.neusfeet.screens.search
 
 import android.widget.Toast
 import androidx.paging.PagedList
+import com.google.android.material.snackbar.Snackbar
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSearchBinding
 import com.krendel.neusfeet.model.articles.Article
@@ -33,16 +34,17 @@ class SearchViewMvc(
     }
 
     init {
-        val innerConfiguration = BaseViewMvcConfiguration(configuration.inflater, rootContainer)
+        val innerConfiguration = BaseViewMvcConfiguration(configuration.inflater, dataBinding.linearContainer)
         articlesListViewMvc = ArticlesListViewMvc(innerConfiguration)
         val searchBarViewMvc = SearchBarViewMvc(innerConfiguration)
-        rootContainer.addView(searchBarViewMvc.rootView)
-        rootContainer.addView(articlesListViewMvc.rootView)
+        dataBinding.linearContainer.addView(searchBarViewMvc.rootView)
+        dataBinding.linearContainer.addView(articlesListViewMvc.rootView)
 
         registerActionsSource(
             articlesListViewMvc.eventsObservable.map {
                 when (it) {
                     is ArticlesListActions.ArticleClicked -> SearchViewActions.ArticleClicked(it.article)
+                    is ArticlesListActions.BookmarkClicked -> SearchViewActions.BookmarkClicked(it.article)
                     is ArticlesListActions.Refresh -> SearchViewActions.Refresh
                     else -> throw IllegalArgumentException("Unknown action!")
                 }
@@ -71,10 +73,15 @@ class SearchViewMvc(
     fun showLoading(show: Boolean, isInitial: Boolean) {
         articlesListViewMvc.showLoading(show, isInitial)
     }
+
+    fun bookmarkAdded() {
+        Snackbar.make(rootContainer, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show()
+    }
 }
 
 sealed class SearchViewActions : ViewMvcActions {
     data class ArticleClicked(val article: Article) : SearchViewActions()
+    data class BookmarkClicked(val article: Article) : SearchViewActions()
     object Refresh : SearchViewActions()
     data class SearchQuery(val query: String) : SearchViewActions()
 }

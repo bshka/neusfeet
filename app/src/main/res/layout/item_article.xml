@@ -31,6 +31,25 @@
                 app:fitImageByUrl="@{viewModel.image}"
                 tools:src="@drawable/placeholder" />
 
+            <FrameLayout
+                android:id="@+id/bookmark"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_below="@id/image"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="3dp"
+                android:onClickListener="@{viewModel.bookmarkClick}">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/ic_bookmark" />
+
+            </FrameLayout>
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
@@ -38,7 +57,7 @@
                 android:layout_below="@id/image"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@id/bookmark"
                 android:fontFamily="@font/sfui_medium"
                 android:text="@{viewModel.title}"
                 android:textColor="@color/black"

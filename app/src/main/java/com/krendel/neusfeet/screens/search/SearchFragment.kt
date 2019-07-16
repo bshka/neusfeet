@@ -17,9 +17,10 @@ class SearchFragment : BaseFragment<SearchFragmentViewModel, SearchViewMvc>() {
     override fun subscribeToViewModel(viewModel: SearchFragmentViewModel) {
         observe(viewModel.eventsObservable) {
             when (it) {
-                is SearchViewModelActions.ArticlesLoaded -> viewMvc.setArticles(it.articles)
-                is SearchViewModelActions.Error -> viewMvc.errorOccurred(it.throwable)
                 is SearchViewModelActions.Loading -> viewMvc.showLoading(it.show, it.isInitial)
+                is SearchViewModelActions.ArticlesLoaded -> viewMvc.setArticles(it.articles)
+                is SearchViewModelActions.BookmarkAdded -> viewMvc.bookmarkAdded()
+                is SearchViewModelActions.Error -> viewMvc.errorOccurred(it.throwable)
             }
         }
     }
@@ -27,11 +28,12 @@ class SearchFragment : BaseFragment<SearchFragmentViewModel, SearchViewMvc>() {
     override fun subscribeToView(viewMvc: SearchViewMvc) {
         observe(viewMvc.eventsObservable) {
             when (it) {
-                is SearchViewActions.Refresh -> viewModel.refresh()
                 is SearchViewActions.SearchQuery -> viewModel.searchQuery(it.query)
                 is SearchViewActions.ArticleClicked -> {
                     findNavController().navigate(SearchFragmentDirections.actionSearchToPreview(it.article))
                 }
+                is SearchViewActions.BookmarkClicked -> viewModel.addBookmark(it.article)
+                is SearchViewActions.Refresh -> viewModel.refresh()
             }
         }
     }

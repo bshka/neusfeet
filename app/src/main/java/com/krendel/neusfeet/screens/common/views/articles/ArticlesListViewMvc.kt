@@ -2,6 +2,7 @@ package com.krendel.neusfeet.screens.common.views.articles
 
 import androidx.databinding.ObservableField
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewArticlesListBinding
 import com.krendel.neusfeet.model.articles.Article
@@ -27,10 +28,18 @@ class ArticlesListViewMvc(
         dataBinding.viewModel = this
     }
 
+    private val articlesTouchHelper: ArticlesListTouchHelper = ArticlesListTouchHelper {
+        sendEvent(ArticlesListActions.ArticleDeleted(recyclerData.get()!![it]!!.article))
+    }
+
     init {
         dataBinding.recyclerView.addItemDecoration(CardItemsDecorator())
         val adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
         dataBinding.recyclerView.adapter = adapter
+
+        val articleItemsTouchHelper = ItemTouchHelper(articlesTouchHelper)
+        articleItemsTouchHelper.attachToRecyclerView(dataBinding.recyclerView)
+
         dataBinding.refreshLayout.setOnRefreshListener {
             sendEvent(ArticlesListActions.Refresh)
         }
@@ -38,9 +47,8 @@ class ArticlesListViewMvc(
         registerActionsSource(
             listEventsObserver.map {
                 when (it) {
-                    is ArticleItemViewActions.Clicked -> ArticlesListActions.ArticleClicked(
-                        it.article
-                    )
+                    is ArticleItemViewActions.Clicked -> ArticlesListActions.ArticleClicked(it.article)
+                    is ArticleItemViewActions.BookmarkClicked -> ArticlesListActions.BookmarkClicked(it.article)
                     else -> throw IllegalArgumentException("Unknown action!")
                 }
             }
@@ -84,6 +92,14 @@ class ArticlesListViewMvc(
         }
     }
 
+    fun setSwipeToRefreshEnabled(enabled: Boolean) {
+        dataBinding.refreshLayout.isEnabled = enabled
+    }
+
+    fun setSwipeToDismissEnabled(enabled: Boolean) {
+        articlesTouchHelper.swipeEnabled = enabled
+    }
+
     companion object {
         private const val FULL_LOADING = 0
         private const val EMPTY_VIEW = 1
@@ -93,5 +109,7 @@ class ArticlesListViewMvc(
 
 sealed class ArticlesListActions : ViewMvcActions {
     data class ArticleClicked(val article: Article) : ArticlesListActions()
+    data class BookmarkClicked(val article: Article) : ArticlesListActions()
+    data class ArticleDeleted(val article: Article) : ArticlesListActions()
     object Refresh : ArticlesListActions()
 }

@@ -10,6 +10,8 @@ import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
 import com.krendel.neusfeet.screens.bookmarks.BookmarksFragmentViewModel
 import com.krendel.neusfeet.screens.bookmarks.BookmarksViewMvc
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
+import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCase
+import com.krendel.neusfeet.screens.common.repository.bookmark.RemoveBookmarkUseCase
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
@@ -85,12 +87,16 @@ val databaseModule = module {
     single(DATABASE) { AppDatabase.getInstance(androidContext()) }
 
     single { (get(DATABASE) as AppDatabase).sourceDao() }
+    single { (get(DATABASE) as AppDatabase).bookmarksDao() }
 
 }
 
 val repoModule = module {
 
     single { RepositoryFactory(get(), get(), get()) }
+
+    single { AddBookmarkUseCase(get(), get()) }
+    single { RemoveBookmarkUseCase(get(), get()) }
 
 }
 
@@ -124,11 +130,11 @@ val viewModelModule = module {
     // fragments
 
     // home fragment
-    viewModel { HomeFragmentViewModel(get(), get()) }
+    viewModel { HomeFragmentViewModel(get(), get(), get()) }
     // search fragment
-    viewModel { SearchFragmentViewModel(get(), get()) }
+    viewModel { SearchFragmentViewModel(get(), get(), get()) }
     // article preview fragment
-    viewModel { PreviewFragmentViewModel() }
+    viewModel { PreviewFragmentViewModel(get(), get()) }
     // bookmarks fragment
     viewModel { BookmarksFragmentViewModel() }
     // settings fragment

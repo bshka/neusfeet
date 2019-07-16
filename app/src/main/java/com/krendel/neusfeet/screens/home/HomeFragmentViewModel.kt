@@ -1,20 +1,24 @@
 package com.krendel.neusfeet.screens.home
 
 import androidx.paging.PagedList
+import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
+import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCase
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
 import com.krendel.neusfeet.screens.common.repository.common.PagedListing
 import com.krendel.neusfeet.screens.common.repository.topheadlines.TopHeadlinesFetchConfiguration
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
+import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 class HomeFragmentViewModel(
+    private val addBookmarkUseCase: AddBookmarkUseCase,
     repositoryFactory: RepositoryFactory,
-    schedulersProvider: SchedulersProvider
+    private val schedulersProvider: SchedulersProvider
 ) : BaseActionsViewModel<HomeViewModelActions>() {
 
     private val articlesSubject: BehaviorSubject<HomeViewModelActions.ArticlesLoaded> = BehaviorSubject.create()
@@ -55,10 +59,20 @@ class HomeFragmentViewModel(
         repositoryListing.refresh()
     }
 
+    fun addBookmark(article: Article) {
+        addBookmarkUseCase.add(article)
+            .observeOn(schedulersProvider.main())
+            .subscribe(
+                { sendEvent(HomeViewModelActions.BookmarkAdded) },
+                { Timber.e(it) }
+            ).connectToLifecycle()
+    }
+
 }
 
 sealed class HomeViewModelActions : ViewModelActions {
     data class ArticlesLoaded(val articles: PagedList<ArticleItemViewModel>) : HomeViewModelActions()
+    object BookmarkAdded : HomeViewModelActions()
     data class Error(val throwable: Throwable) : HomeViewModelActions()
     data class Loading(val show: Boolean, val isInitial: Boolean) : HomeViewModelActions()
 }

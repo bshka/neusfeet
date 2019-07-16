@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ArticleItemViewModel(
-    private val article: Article
+    val article: Article
 ) : ListItemViewMvc<ArticleItemViewActions>() {
 
     override val layout: Int = R.layout.item_article
@@ -18,13 +18,15 @@ class ArticleItemViewModel(
     val onClick: Listener = {
         sendEvent(ArticleItemViewActions.Clicked(article))
     }
+    val bookmarkClick: Listener = {
+        sendEvent(ArticleItemViewActions.BookmarkClicked(article))
+    }
 
     val image: String? = article.urlToImage
     val title: String? = article.title
     val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).format(article.publishedAt ?: Date())
     val description: String? = article.description
     val source: String? = article.sourceName
-    val author: String? = article.author
 
     override fun hasTheSameContent(other: ListItemViewMvc<*>): Boolean {
         return (other as ArticleItemViewModel).article == article
@@ -33,4 +35,5 @@ class ArticleItemViewModel(
 
 sealed class ArticleItemViewActions : ListItemActions {
     data class Clicked(val article: Article) : ArticleItemViewActions()
+    data class BookmarkClicked(val article: Article) : ArticleItemViewActions()
 }

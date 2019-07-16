@@ -28,12 +28,11 @@ class PreviewFragment : BaseFragment<PreviewFragmentViewModel, PreviewViewMvc>()
     }
 
     override fun subscribeToViewModel(viewModel: PreviewFragmentViewModel) {
-        // still no actions from view model
-//        observe(viewModel.eventsObservable) {
-//            when (it) {
-//
-//            }
-//        }
+        observe(viewModel.eventsObservable) {
+            when (it) {
+                is PreviewViewModelActions.BookmarkAdded -> viewMvc.bookmarkAdded()
+            }
+        }
     }
 
     override fun subscribeToView(viewMvc: PreviewViewMvc) {
@@ -43,6 +42,7 @@ class PreviewFragment : BaseFragment<PreviewFragmentViewModel, PreviewViewMvc>()
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.article.url))
                     startActivity(intent)
                 }
+                is PreviewViewActions.BookmarkClicked -> viewModel.addBookmark(it.article)
             }
         }
     }

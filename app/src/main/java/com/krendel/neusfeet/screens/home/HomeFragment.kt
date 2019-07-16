@@ -17,15 +17,10 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
     override fun subscribeToViewModel(viewModel: HomeFragmentViewModel) {
         observe(viewModel.eventsObservable) {
             when (it) {
-                is HomeViewModelActions.ArticlesLoaded -> {
-                    viewMvc.setArticles(it.articles)
-                }
-                is HomeViewModelActions.Error -> {
-                    viewMvc.errorOccurred(it.throwable)
-                }
-                is HomeViewModelActions.Loading -> {
-                    viewMvc.showLoading(it.show, it.isInitial)
-                }
+                is HomeViewModelActions.Loading -> viewMvc.showLoading(it.show, it.isInitial)
+                is HomeViewModelActions.ArticlesLoaded -> viewMvc.setArticles(it.articles)
+                is HomeViewModelActions.BookmarkAdded -> viewMvc.bookmarkAdded()
+                is HomeViewModelActions.Error -> viewMvc.errorOccurred(it.throwable)
             }
         }
     }
@@ -36,9 +31,8 @@ class HomeFragment : BaseFragment<HomeFragmentViewModel, HomeViewMvc>() {
                 is HomeViewActions.ArticleClicked -> {
                     findNavController().navigate(HomeFragmentDirections.actionHomeToPreview(it.article))
                 }
-                is HomeViewActions.Refresh -> {
-                    viewModel.refresh()
-                }
+                is HomeViewActions.Refresh -> viewModel.refresh()
+                is HomeViewActions.BookmarkClicked -> viewModel.addBookmark(it.article)
             }
         }
     }

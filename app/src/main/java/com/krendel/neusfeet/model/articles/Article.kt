@@ -1,11 +1,19 @@
 package com.krendel.neusfeet.model.articles
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.krendel.neusfeet.local.Converters
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Entity
 @Parcelize
+@TypeConverters(Converters::class)
 data class Article(
+    @PrimaryKey(autoGenerate = true)
+    val localId: Int = 0,
     val publishedAt: Date? = null,
     val author: String? = null,
     val urlToImage: String? = null,
@@ -15,4 +23,4 @@ data class Article(
     val title: String? = null,
     val url: String? = null,
     val content: String? = null
-): Parcelable
+) : Parcelable

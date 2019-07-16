@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.databinding.BaseObservable
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.krendel.neusfeet.common.safetySubscribe
@@ -18,7 +19,7 @@ import timber.log.Timber
 
 abstract class BaseViewMvc<out Configuration : ViewMvcConfiguration, BindingType : ViewDataBinding, in ActionsType : ViewMvcActions>(
     protected val configuration: Configuration
-) : ViewMvc {
+) : ViewMvc, BaseObservable() {
 
     /**
      * Fragment or activity should subscribe on this observable for working with ViewMvc events
