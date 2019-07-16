@@ -18,12 +18,13 @@
         app:cardCornerRadius="@dimen/item_radius"
         app:cardElevation="2dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:scaleType="centerInside"
@@ -31,8 +32,10 @@
                 tools:src="@drawable/placeholder" />
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/image"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginEnd="20dp"
@@ -43,11 +46,27 @@
                 tools:text="Quick Brown Fox Jumps Over" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/source"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/title"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@font/sfui_regular"
+                android:text="@{viewModel.source}"
+                android:textAllCaps="true"
+                android:textColor="@color/martini"
+                android:textSize="14sp"
+                tools:text="Google News" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@id/source"
                 android:fontFamily="@font/sfui_light"
                 android:text="@{viewModel.date}"
                 android:textColor="@color/french_gray"
@@ -57,6 +76,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/source"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
@@ -69,7 +89,7 @@
                 android:textSize="18sp"
                 tools:text="Synth polaroid bitters chillwave pickled. Vegan disrupt tousled, Portland keffiyeh aesthetic food" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 </layout>

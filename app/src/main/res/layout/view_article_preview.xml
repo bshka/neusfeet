@@ -18,9 +18,10 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@android:color/white"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
@@ -28,6 +29,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -38,18 +40,36 @@
                     tools:text="Quick Brown Fox Jumps Over" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/source"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
                     android:layout_marginTop="8dp"
+                    android:fontFamily="@font/sfui_regular"
+                    android:text="@{viewModel.source}"
+                    android:textAllCaps="true"
+                    android:textColor="@color/martini"
+                    android:textSize="14sp"
+                    tools:text="Google News" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@id/source"
                     android:fontFamily="@font/sfui_light"
                     android:text="@{viewModel.date}"
                     android:textColor="@color/french_gray"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="16 MAY 2016" />
 
                 <TextView
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/source"
                     android:layout_marginTop="15dp"
                     android:fontFamily="@font/sfui_regular"
                     android:text="@{viewModel.content}"
@@ -60,13 +80,13 @@
                 <FrameLayout
                     android:layout_width="200dp"
                     android:layout_height="44dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@id/description"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="57dp"
                     android:layout_marginBottom="22dp"
                     android:background="@drawable/background_read_article"
                     android:elevation="2dp"
                     android:onClickListener="@{viewModel.readArticle}"
-                    android:orientation="horizontal"
                     android:stateListAnimator="@animator/lift_on_touch">
 
                     <TextView
@@ -83,7 +103,7 @@
 
                 </FrameLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </androidx.core.widget.NestedScrollView>

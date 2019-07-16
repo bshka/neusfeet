@@ -32,6 +32,7 @@ class PreviewViewMvc(
     val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
         .format(configuration.article.publishedAt ?: Date())
     val content: Spanned? = HtmlCompat.fromHtml(configuration.article.content ?: "", HtmlCompat.FROM_HTML_MODE_COMPACT)
+    val source: String? = configuration.article.source?.name
 
     val readArticle: Listener = { sendEvent(PreviewViewActions.ReadArticle(configuration.article)) }
 
