@@ -5,12 +5,11 @@ import androidx.paging.PagedList
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewArticlesListBinding
 import com.krendel.neusfeet.model.articles.Article
-import com.krendel.neusfeet.screens.common.list.AdapterObserver
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.RecyclerPagingBindingAdapter
 import com.krendel.neusfeet.screens.common.switchToChild
-import com.krendel.neusfeet.screens.common.views.CardItemsDecorator
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
+import com.krendel.neusfeet.screens.common.views.CardItemsDecorator
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
 import io.reactivex.subjects.PublishSubject
@@ -32,12 +31,6 @@ class ArticlesListViewMvc(
         dataBinding.recyclerView.addItemDecoration(CardItemsDecorator())
         val adapter = RecyclerPagingBindingAdapter(null, listEventsObserver)
         dataBinding.recyclerView.adapter = adapter
-        adapter.registerAdapterDataObserver(
-            AdapterObserver(
-                dataBinding.viewFlipper,
-                adapter
-            )
-        )
         dataBinding.refreshLayout.setOnRefreshListener {
             sendEvent(ArticlesListActions.Refresh)
         }
@@ -58,24 +51,26 @@ class ArticlesListViewMvc(
         val adapter = dataBinding.recyclerView.adapter
 
         if (isInitial) {
-            if (show) {
-                if (adapter != null && adapter.itemCount == 0) {
-                    dataBinding.viewFlipper.switchToChild(0)
+            adapter?.let {
+                if (show && adapter.itemCount == 0) {
+                    dataBinding.viewFlipper.switchToChild(FULL_LOADING)
                 } else {
-                    dataBinding.viewFlipper.switchToChild(2)
+                    if (adapter.itemCount == 0) {
+                        dataBinding.viewFlipper.switchToChild(EMPTY_VIEW)
+                    } else {
+                        dataBinding.viewFlipper.switchToChild(LIST)
+                    }
                 }
             }
         } else {
-            if (dataBinding.viewFlipper.displayedChild != 2) {
-                dataBinding.viewFlipper.displayedChild = 2
-            }
+            dataBinding.viewFlipper.switchToChild(LIST)
             dataBinding.refreshLayout.isRefreshing = show
         }
     }
 
     fun onError() {
         if (dataBinding.recyclerView.adapter!!.itemCount == 0) {
-            dataBinding.viewFlipper.switchToChild(1)
+            dataBinding.viewFlipper.switchToChild(EMPTY_VIEW)
         }
     }
 
@@ -84,6 +79,15 @@ class ArticlesListViewMvc(
 
         // TODO need to think of how to update data list. before invalidation list can be updated on it's own, after - needs to be changed with a new one
         recyclerData.set(articles)
+        if (articles.isNotEmpty()) {
+            showLoading(show = false, isInitial = false)
+        }
+    }
+
+    companion object {
+        private const val FULL_LOADING = 0
+        private const val EMPTY_VIEW = 1
+        private const val LIST = 2
     }
 }
 

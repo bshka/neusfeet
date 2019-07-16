@@ -22,6 +22,7 @@ class RepositoryFactory(
         compositeDisposable: CompositeDisposable
     ) =
         TopHeadlinesRepository(
+            sourceDao = sourceDao,
             newsApi = newsApi,
             schedulersProvider = schedulersProvider,
             compositeDisposable = compositeDisposable,

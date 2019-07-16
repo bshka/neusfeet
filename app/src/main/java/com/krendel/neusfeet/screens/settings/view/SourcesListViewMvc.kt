@@ -4,14 +4,13 @@ import androidx.databinding.ObservableField
 import com.krendel.neusfeet.R
 import com.krendel.neusfeet.databinding.ViewSourcesListBinding
 import com.krendel.neusfeet.local.source.Source
-import com.krendel.neusfeet.screens.common.list.AdapterObserver
 import com.krendel.neusfeet.screens.common.list.ListItemActions
 import com.krendel.neusfeet.screens.common.list.RecyclerBindingAdapter
 import com.krendel.neusfeet.screens.common.switchToChild
 import com.krendel.neusfeet.screens.common.views.BaseViewMvc
+import com.krendel.neusfeet.screens.common.views.CardItemsDecorator
 import com.krendel.neusfeet.screens.common.views.ViewMvcActions
 import com.krendel.neusfeet.screens.common.views.ViewMvcConfiguration
-import com.krendel.neusfeet.screens.common.views.CardItemsDecorator
 import com.krendel.neusfeet.screens.settings.items.SourceItemActions
 import com.krendel.neusfeet.screens.settings.items.SourceItemViewModel
 import io.reactivex.subjects.PublishSubject
@@ -33,12 +32,6 @@ class SourcesListViewMvc(
         val adapter = RecyclerBindingAdapter(eventsObserver = listEventsObserver)
         dataBinding.recyclerView.adapter = adapter
         dataBinding.recyclerView.addItemDecoration(CardItemsDecorator())
-        adapter.registerAdapterDataObserver(
-            AdapterObserver(
-                dataBinding.viewFlipper,
-                adapter
-            )
-        )
         dataBinding.refreshLayout.setOnRefreshListener { sendEvent(SourcesListActions.Refresh) }
 
         registerActionsSource(
@@ -56,14 +49,19 @@ class SourcesListViewMvc(
         val adapter = dataBinding.recyclerView.adapter
 
         if (isInitial) {
-            if (show) {
-                if (adapter != null && adapter.itemCount == 0) {
-                    dataBinding.viewFlipper.switchToChild(0)
+            adapter?.let {
+                if (show && adapter.itemCount == 0) {
+                    dataBinding.viewFlipper.switchToChild(FULL_LOADING)
                 } else {
-                    dataBinding.viewFlipper.switchToChild(2)
+                    if (adapter.itemCount == 0) {
+                        dataBinding.viewFlipper.switchToChild(EMPTY_VIEW)
+                    } else {
+                        dataBinding.viewFlipper.switchToChild(LIST)
+                    }
                 }
             }
         } else {
+            dataBinding.viewFlipper.switchToChild(LIST)
             dataBinding.refreshLayout.isRefreshing = show
         }
     }
@@ -77,6 +75,15 @@ class SourcesListViewMvc(
     fun setSources(sources: List<SourceItemViewModel>) {
         dataBinding.refreshLayout.isRefreshing = false
         recyclerData.set(sources)
+        if (sources.isNotEmpty()) {
+            showLoading(show = false, isInitial = false)
+        }
+    }
+
+    companion object {
+        private const val FULL_LOADING = 0
+        private const val EMPTY_VIEW = 1
+        private const val LIST = 2
     }
 }
 

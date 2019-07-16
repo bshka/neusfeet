@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ArticleItemViewModel(
-    article: Article
+    private val article: Article
 ) : ListItemViewMvc<ArticleItemViewActions>() {
 
     override val layout: Int = R.layout.item_article
@@ -24,7 +24,9 @@ class ArticleItemViewModel(
     val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).format(article.publishedAt ?: Date())
     val description: String? = article.description
 
-    override fun getSpanSize(spanCount: Int): Int = 1
+    override fun hasTheSameContent(other: ListItemViewMvc<*>): Boolean {
+        return (other as ArticleItemViewModel).article == article
+    }
 }
 
 sealed class ArticleItemViewActions : ListItemActions {

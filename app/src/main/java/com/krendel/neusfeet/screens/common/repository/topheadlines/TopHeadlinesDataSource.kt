@@ -90,7 +90,8 @@ class TopHeadlinesDataSource(
         return newsApi.headlines(
             pageSize = pageSize,
             page = page,
-            query = configuration.query
+            query = configuration.query,
+            sources = configuration.sources
         ).subscribeOn(schedulersProvider.io())
             .map { data ->
                 val result = mutableListOf<Article>()

@@ -1,7 +1,6 @@
 package com.krendel.neusfeet.local.source
 
 import androidx.room.*
-import com.krendel.neusfeet.local.source.Source
 import io.reactivex.Flowable
 
 @Dao
@@ -18,5 +17,8 @@ interface SourceDao {
 
     @Query("SELECT * FROM source ORDER BY id")
     fun all(): Flowable<List<Source>>
+
+    @Query("SELECT group_concat(id) FROM source")
+    fun sources(): Flowable<String>
 
 }

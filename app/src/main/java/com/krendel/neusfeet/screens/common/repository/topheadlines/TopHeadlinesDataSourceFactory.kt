@@ -18,15 +18,16 @@ class TopHeadlinesDataSourceFactory(
 
     override fun newSource(): TopHeadlinesDataSource =
         TopHeadlinesDataSource(
-            newsApi,
-            schedulersProvider,
-            configuration,
-            compositeDisposable
+            newsApi = newsApi,
+            schedulersProvider = schedulersProvider,
+            configuration = configuration,
+            compositeDisposable = compositeDisposable
         )
 
 }
 
 data class TopHeadlinesFetchConfiguration(
     var pageSize: Int,
-    var query: String? = null
+    var query: String? = null,
+    var sources: String? = null
 )
