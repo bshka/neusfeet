@@ -32,5 +32,13 @@ data class ArticlesItem(
 )
 
 fun ArticlesItem.toArticle(): Article = Article(
-    publishedAt, author, urlToImage, description, sourceSchema?.toSource(), title, url, content
+    publishedAt = publishedAt,
+    author = author,
+    url = url,
+    description = description,
+    sourceName = sourceSchema?.name,
+    sourceId = sourceSchema?.id,
+    title = title,
+    urlToImage = urlToImage,
+    content = content
 )

@@ -23,7 +23,8 @@ class ArticleItemViewModel(
     val title: String? = article.title
     val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).format(article.publishedAt ?: Date())
     val description: String? = article.description
-    val source: String? = article.source?.name
+    val source: String? = article.sourceName
+    val author: String? = article.author
 
     override fun hasTheSameContent(other: ListItemViewMvc<*>): Boolean {
         return (other as ArticleItemViewModel).article == article
