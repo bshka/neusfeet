@@ -39,6 +39,10 @@ class PreviewViewMvc(
         sendEvent(PreviewViewActions.BookmarkClicked(article))
     }
 
+    val upClick: Listener = {
+        sendEvent(PreviewViewActions.UpClicked)
+    }
+
     val image: String? = article.urlToImage
     val title: String? = article.title
     val date: String = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
@@ -62,6 +66,7 @@ class PreviewViewMvc(
 sealed class PreviewViewActions : ViewMvcActions {
     data class ReadArticle(val article: Article) : PreviewViewActions()
     data class BookmarkClicked(val article: Article) : PreviewViewActions()
+    object UpClicked : PreviewViewActions()
 }
 
 data class PreviewViewConfiguration(

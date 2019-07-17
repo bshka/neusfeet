@@ -2,6 +2,7 @@ package com.krendel.neusfeet.screens.preview
 
 import android.content.Intent
 import android.net.Uri
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.krendel.neusfeet.screens.common.BaseFragment
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
@@ -44,6 +45,7 @@ class PreviewFragment : BaseFragment<PreviewFragmentViewModel, PreviewViewMvc>()
                     startActivity(intent)
                 }
                 is PreviewViewActions.BookmarkClicked -> viewModel.addBookmark(it.article)
+                is PreviewViewActions.UpClicked -> findNavController().navigateUp()
             }
         }
     }
