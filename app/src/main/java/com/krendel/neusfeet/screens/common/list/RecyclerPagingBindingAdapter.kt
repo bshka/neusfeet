@@ -18,10 +18,6 @@ class RecyclerPagingBindingAdapter(
         submitList(items)
     }
 
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-     *  RecyclerView.Adapter methods
-    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderBinding<*> {
         val inflater = LayoutInflater.from(parent.context)
         val binding: ViewDataBinding = DataBindingUtil.inflate(inflater, viewType, parent, false)
@@ -34,10 +30,6 @@ class RecyclerPagingBindingAdapter(
     override fun onViewRecycled(holder: ViewHolderBinding<*>) = holder.unbind()
 
     override fun getItemViewType(position: Int): Int = getItem(position)!!.viewType
-
-    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\
-     *  Diff util
-    \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
     companion object {
         private val DIFF_CALLBACK = DiffCallback()

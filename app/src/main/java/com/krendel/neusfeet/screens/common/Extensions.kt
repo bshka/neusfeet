@@ -28,12 +28,6 @@ fun Context.applyDP(px: Float): Int =
 
 fun View.applyDP(px: Float): Int = this.context.applyDP(px)
 
-fun View.addHeight(height: Int) {
-    val params = layoutParams
-    params.height = this.height + height
-    layoutParams = params
-}
-
 fun Context.getStatusBarHeight(): Int {
     var result = 0
     val resourceId = this.resources.getIdentifier("status_bar_height", "dimen", "android")

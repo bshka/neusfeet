@@ -27,19 +27,19 @@ class MainActivity : BaseActivity<MainActivityViewModel, MainViewMvc>() {
 
     override fun subscribeToView(viewMvc: MainViewMvc) {
         observe(viewMvc.eventsObservable) {
-            // TODO view event
-            when (it) {
-
-            }
+            // no actions from view mvc
+//            when (it) {
+//
+//            }
         }
     }
 
     override fun subscribeToViewModel(viewModel: MainActivityViewModel) {
         observe(viewModel.eventsObservable) {
-            // TODO view model events
-            when (it) {
-
-            }
+            // no actions from view model
+//            when (it) {
+//
+//            }
         }
     }
 

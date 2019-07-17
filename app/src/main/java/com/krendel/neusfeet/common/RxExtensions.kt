@@ -6,11 +6,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import timber.log.Timber
 
-
-/**
- * @author Alexey Zubkovskiy on 24 May 2019
- */
-
 operator fun CompositeDisposable.plus(disposable: Disposable) {
     add(disposable)
 }

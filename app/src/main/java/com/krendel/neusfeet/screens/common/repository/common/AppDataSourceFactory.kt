@@ -21,7 +21,7 @@ abstract class AppDataSourceFactory<SourceType : AppDataSource<Int, Value>, Valu
     private val dataSourceEventsObservable: PublishSubject<DataSourceActions> = PublishSubject.create()
 
     /**
-     * Link to [com.krendel.neusfeet.screens.common.repository.AppDataSource.eventsObservable] disposable.
+     * Link to [AppDataSource.eventsObservable] disposable.
      * Need to dispose of because new data source will be created after invalidation
      */
     private var dataSourceEventsDisposable: Disposable? = null
