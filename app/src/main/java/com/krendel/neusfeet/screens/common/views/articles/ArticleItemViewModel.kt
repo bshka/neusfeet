@@ -9,7 +9,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ArticleItemViewModel(
-    val article: Article
+    val article: Article,
+    val showBookmark: Boolean = true
 ) : ListItemViewMvc<ArticleItemViewActions>() {
 
     override val layout: Int = R.layout.item_article

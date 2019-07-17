@@ -19,6 +19,7 @@ class PreviewFragment : BaseFragment<PreviewFragmentViewModel, PreviewViewMvc>()
             parametersOf(
                 PreviewViewConfiguration(
                     article = safeArgs.article,
+                    showBookmark = safeArgs.showBookmark,
                     inflater = configuration.inflater,
                     container = configuration.container,
                     lifecycleOwner = configuration.lifecycleOwner

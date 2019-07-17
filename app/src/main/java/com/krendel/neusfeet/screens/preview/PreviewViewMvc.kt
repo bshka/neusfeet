@@ -30,6 +30,7 @@ class PreviewViewMvc(
 
     private val article: Article = configuration.article
 
+    val showBookmark = configuration.showBookmark
     val imageMinHeight: Int by lazy {
         context.getAttributeDimension(R.attr.actionBarSize) + context.getStatusBarHeight()
     }
@@ -65,6 +66,7 @@ sealed class PreviewViewActions : ViewMvcActions {
 
 data class PreviewViewConfiguration(
     val article: Article,
+    val showBookmark: Boolean,
     override val lifecycleOwner: LifecycleOwner,
     override val inflater: LayoutInflater,
     override val container: ViewGroup?

@@ -33,8 +33,7 @@ class EverythingRepository(
             dataList = RxPagedListBuilder<Int, ArticleItemViewModel>(
                 sourceFactory.map { ArticleItemViewModel(it) },
                 config
-            )
-                .setFetchScheduler(schedulersProvider.main())
+            ).setFetchScheduler(schedulersProvider.main())
                 .buildObservable(),
             refresh = {
                 sourceFactory.refresh()

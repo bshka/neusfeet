@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel" />
@@ -38,7 +40,8 @@
                 android:layout_below="@id/image"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="3dp"
-                android:onClickListener="@{viewModel.bookmarkClick}">
+                android:onClickListener="@{viewModel.bookmarkClick}"
+                android:visibility="@{viewModel.showBookmark ? View.VISIBLE : View.GONE, default = visible}">
 
                 <ImageView
                     android:layout_width="wrap_content"

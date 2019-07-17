@@ -16,9 +16,9 @@ class BookmarksFragment : BaseFragment<BookmarksFragmentViewModel, BookmarksView
 
     override fun subscribeToViewModel(viewModel: BookmarksFragmentViewModel) {
         observe(viewModel.eventsObservable) {
-            // TODO observe view model actions
             when (it) {
-
+                is BookmarksViewModelActions.BookmarksLoaded -> viewMvc.setBookmarks(it.list)
+                is BookmarksViewModelActions.BookmarkRemoved -> viewMvc.bookmarkRemoved()
             }
         }
     }
@@ -27,7 +27,12 @@ class BookmarksFragment : BaseFragment<BookmarksFragmentViewModel, BookmarksView
         observe(viewMvc.eventsObservable) {
             when (it) {
                 is BookmarksViewActions.ArticleClicked -> {
-                    findNavController().navigate(BookmarksFragmentDirections.actionBookmarksToPreview(it.article))
+                    findNavController().navigate(
+                        BookmarksFragmentDirections.actionBookmarksToPreview(
+                            it.article,
+                            false
+                        )
+                    )
                 }
                 is BookmarksViewActions.RemoveBookmark -> viewModel.removeBookmark(it.article)
             }

@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit
 
 private val RETROFIT = StringQualifier("RETROFIT")
 private val DATABASE = StringQualifier("DATABASE")
+private val REPOSITORY_FACTORY = StringQualifier("REPOSITORY_FACTORY")
 
 val rxJava = module {
 
@@ -93,7 +94,9 @@ val databaseModule = module {
 
 val repoModule = module {
 
-    single { RepositoryFactory(get(), get(), get()) }
+    single(REPOSITORY_FACTORY) { RepositoryFactory(get(), get(), get(), get()) }
+
+    factory { (get(REPOSITORY_FACTORY) as RepositoryFactory).bookmarksRepository() }
 
     single { AddBookmarkUseCase(get(), get()) }
     single { RemoveBookmarkUseCase(get(), get()) }
@@ -130,14 +133,14 @@ val viewModelModule = module {
     // fragments
 
     // home fragment
-    viewModel { HomeFragmentViewModel(get(), get(), get()) }
+    viewModel { HomeFragmentViewModel(get(), get(REPOSITORY_FACTORY), get()) }
     // search fragment
-    viewModel { SearchFragmentViewModel(get(), get(), get()) }
+    viewModel { SearchFragmentViewModel(get(), get(REPOSITORY_FACTORY), get()) }
     // article preview fragment
     viewModel { PreviewFragmentViewModel(get(), get()) }
     // bookmarks fragment
-    viewModel { BookmarksFragmentViewModel() }
+    viewModel { BookmarksFragmentViewModel(get(), get(), get()) }
     // settings fragment
-    viewModel { SettingsFragmentViewModel(get(), get()) }
+    viewModel { SettingsFragmentViewModel(get(REPOSITORY_FACTORY), get()) }
 
 }

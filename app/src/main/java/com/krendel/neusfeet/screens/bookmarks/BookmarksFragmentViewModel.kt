@@ -1,18 +1,19 @@
 package com.krendel.neusfeet.screens.bookmarks
 
 import androidx.paging.PagedList
-import com.krendel.neusfeet.local.bookmarks.BookmarksDao
 import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
+import com.krendel.neusfeet.screens.common.repository.bookmark.BookmarksRepository
 import com.krendel.neusfeet.screens.common.repository.bookmark.RemoveBookmarkUseCase
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
+import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 
 class BookmarksFragmentViewModel(
-    bookmarksDao: BookmarksDao,
+    bookmarksRepository: BookmarksRepository,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
     private val schedulersProvider: SchedulersProvider
 ) : BaseActionsViewModel<BookmarksViewModelActions>() {
@@ -20,14 +21,11 @@ class BookmarksFragmentViewModel(
     private val bookmarksData: BehaviorSubject<BookmarksViewModelActions.BookmarksLoaded> = BehaviorSubject.create()
 
     init {
-
-//        bookmarksDao.all()
-//            .map { it.map { article -> ArticleItemViewModel(article) } }
-//            .map { BookmarksViewModelActions.BookmarksLoaded(it) }
-//            .subscribe(
-//                { sendEvent(it) },
-//                { Timber.e(it) }
-//            ).connectToLifecycle()
+        val repositoryListing = bookmarksRepository.bookmarks(20)
+        repositoryListing.dataList
+            .map { BookmarksViewModelActions.BookmarksLoaded(it) }
+            .registerObserver(bookmarksData)
+            .connectToLifecycle()
     }
 
     override fun start() {
