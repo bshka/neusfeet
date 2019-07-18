@@ -21,4 +21,5 @@ A pet client for https://newsapi.org
 6. Room
 7. Paging
 8. Navigation
+9. Databinding
 
