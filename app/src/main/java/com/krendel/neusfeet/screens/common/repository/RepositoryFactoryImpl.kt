@@ -4,7 +4,7 @@ import com.krendel.neusfeet.local.bookmarks.BookmarksDao
 import com.krendel.neusfeet.local.source.SourceDao
 import com.krendel.neusfeet.networking.NewsApi
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.repository.bookmark.BookmarksRepository
+import com.krendel.neusfeet.screens.common.repository.bookmark.BookmarksRepositoryImpl
 import com.krendel.neusfeet.screens.common.repository.everything.EverythingFetchConfiguration
 import com.krendel.neusfeet.screens.common.repository.everything.EverythingRepository
 import com.krendel.neusfeet.screens.common.repository.sources.SourcesFetchConfiguration
@@ -21,7 +21,7 @@ class RepositoryFactoryImpl(
 ): RepositoryFactory {
 
     override fun bookmarksRepository() =
-        BookmarksRepository(
+        BookmarksRepositoryImpl(
             bookmarksDao = bookmarksDao,
             schedulersProvider = schedulersProvider
         )

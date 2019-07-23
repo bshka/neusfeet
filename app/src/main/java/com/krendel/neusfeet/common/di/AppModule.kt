@@ -14,7 +14,9 @@ import com.krendel.neusfeet.screens.bookmarks.data.BookmarksDataInteractorImpl
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactoryImpl
 import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCase
+import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCaseImpl
 import com.krendel.neusfeet.screens.common.repository.bookmark.RemoveBookmarkUseCase
+import com.krendel.neusfeet.screens.common.repository.bookmark.RemoveBookmarkUseCaseImpl
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
@@ -103,15 +105,13 @@ val repoModule = module {
 
     single<RepositoryFactory>(REPOSITORY_FACTORY) { RepositoryFactoryImpl(get(), get(), get(), get()) }
 
-    factory { (get(REPOSITORY_FACTORY) as RepositoryFactory).bookmarksRepository() }
-
-    single { AddBookmarkUseCase(get(), get()) }
-    single { RemoveBookmarkUseCase(get(), get()) }
+    single<AddBookmarkUseCase> { AddBookmarkUseCaseImpl(get(), get()) }
+    single<RemoveBookmarkUseCase> { RemoveBookmarkUseCaseImpl(get(), get()) }
 
     single<BookmarksDataInteractor> {
         BookmarksDataInteractorImpl(
             get(),
-            get(REPOSITORY_FACTORY)
+            (get(REPOSITORY_FACTORY) as RepositoryFactory).bookmarksRepository()
         )
     }
 
