@@ -3,8 +3,6 @@ package com.krendel.neusfeet.screens.search
 import androidx.paging.PagedList
 import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
-import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCase
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
 import com.krendel.neusfeet.screens.common.repository.common.PagedListing
 import com.krendel.neusfeet.screens.common.repository.everything.EverythingFetchConfiguration
@@ -12,12 +10,12 @@ import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
+import com.krendel.neusfeet.screens.search.data.SearchDataInteractor
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 
 class SearchFragmentViewModel(
-    private val addBookmarkUseCase: AddBookmarkUseCase,
-    repositoryFactory: RepositoryFactory,
+    private val searchDataInteractor: SearchDataInteractor,
     private val schedulersProvider: SchedulersProvider
 ) : BaseActionsViewModel<SearchViewModelActions>() {
 
@@ -27,8 +25,7 @@ class SearchFragmentViewModel(
     private val configuration = EverythingFetchConfiguration(20, "")
 
     init {
-        val repository = repositoryFactory.everythingRepository(configuration, disposables)
-        repositoryListing = repository.everything(configuration.pageSize)
+        repositoryListing = searchDataInteractor.everything(configuration, disposables)
 
         // data loading
         repositoryListing
@@ -65,7 +62,7 @@ class SearchFragmentViewModel(
     }
 
     fun addBookmark(article: Article) {
-        addBookmarkUseCase.add(article)
+        searchDataInteractor.addBookmark(article)
             .observeOn(schedulersProvider.main())
             .subscribe(
                 { sendEvent(SearchViewModelActions.BookmarkAdded) },

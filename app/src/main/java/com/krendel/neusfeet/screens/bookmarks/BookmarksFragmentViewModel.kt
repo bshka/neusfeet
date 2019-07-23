@@ -3,8 +3,7 @@ package com.krendel.neusfeet.screens.bookmarks
 import androidx.paging.PagedList
 import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.repository.bookmark.BookmarksRepository
-import com.krendel.neusfeet.screens.common.repository.bookmark.RemoveBookmarkUseCase
+import com.krendel.neusfeet.screens.bookmarks.data.BookmarksDataInteractor
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
@@ -13,15 +12,14 @@ import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 
 class BookmarksFragmentViewModel(
-    bookmarksRepository: BookmarksRepository,
-    private val removeBookmarkUseCase: RemoveBookmarkUseCase,
+    private val bookmarksDataInteractor: BookmarksDataInteractor,
     private val schedulersProvider: SchedulersProvider
 ) : BaseActionsViewModel<BookmarksViewModelActions>() {
 
     private val bookmarksData: BehaviorSubject<BookmarksViewModelActions.BookmarksLoaded> = BehaviorSubject.create()
 
     init {
-        val repositoryListing = bookmarksRepository.bookmarks(20)
+        val repositoryListing = bookmarksDataInteractor.bookmarks(20)
         repositoryListing.dataList
             .map { BookmarksViewModelActions.BookmarksLoaded(it) }
             .registerObserver(bookmarksData)
@@ -34,7 +32,7 @@ class BookmarksFragmentViewModel(
     }
 
     fun removeBookmark(article: Article) {
-        removeBookmarkUseCase.remove(article)
+        bookmarksDataInteractor.removeBookmark(article)
             .observeOn(schedulersProvider.main())
             .subscribe(
                 { sendEvent(BookmarksViewModelActions.BookmarkRemoved) },

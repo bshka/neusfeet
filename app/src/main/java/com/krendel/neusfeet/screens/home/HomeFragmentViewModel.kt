@@ -3,8 +3,6 @@ package com.krendel.neusfeet.screens.home
 import androidx.paging.PagedList
 import com.krendel.neusfeet.model.articles.Article
 import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
-import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
-import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCase
 import com.krendel.neusfeet.screens.common.repository.common.DataSourceActions
 import com.krendel.neusfeet.screens.common.repository.common.PagedListing
 import com.krendel.neusfeet.screens.common.repository.topheadlines.TopHeadlinesFetchConfiguration
@@ -12,12 +10,12 @@ import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.viewmodel.ViewModelActions
 import com.krendel.neusfeet.screens.common.viewmodel.registerObserver
 import com.krendel.neusfeet.screens.common.views.articles.ArticleItemViewModel
+import com.krendel.neusfeet.screens.home.data.HomeDataInteractor
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 
 class HomeFragmentViewModel(
-    private val addBookmarkUseCase: AddBookmarkUseCase,
-    repositoryFactory: RepositoryFactory,
+    private val homeDataInteractor: HomeDataInteractor,
     private val schedulersProvider: SchedulersProvider
 ) : BaseActionsViewModel<HomeViewModelActions>() {
 
@@ -27,8 +25,7 @@ class HomeFragmentViewModel(
     private val configuration = TopHeadlinesFetchConfiguration(20)
 
     init {
-        val repository = repositoryFactory.topHeadlinesRepository(configuration, disposables)
-        repositoryListing = repository.headlines(configuration.pageSize)
+        repositoryListing = homeDataInteractor.headlinesListing(configuration, disposables)
 
         // data loading
         repositoryListing
@@ -60,7 +57,7 @@ class HomeFragmentViewModel(
     }
 
     fun addBookmark(article: Article) {
-        addBookmarkUseCase.add(article)
+        homeDataInteractor.addBookmark(article)
             .observeOn(schedulersProvider.main())
             .subscribe(
                 { sendEvent(HomeViewModelActions.BookmarkAdded) },

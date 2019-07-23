@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import com.krendel.neusfeet.common.safetySubscribe
 import com.krendel.neusfeet.screens.common.viewmodel.BaseActionsViewModel
 import com.krendel.neusfeet.screens.common.views.BaseLifecycleViewMvc
@@ -25,6 +24,10 @@ abstract class BaseFragment<ViewModel : BaseActionsViewModel<*>, ViewMvcType : B
         private set
 
     private val disposables = CompositeDisposable()
+
+    final override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     final override fun onCreateView(
         inflater: LayoutInflater,

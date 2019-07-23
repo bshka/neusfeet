@@ -9,12 +9,17 @@ import com.krendel.neusfeet.networking.schedulers.SchedulersProvider
 import com.krendel.neusfeet.networking.schedulers.SchedulersProviderImpl
 import com.krendel.neusfeet.screens.bookmarks.BookmarksFragmentViewModel
 import com.krendel.neusfeet.screens.bookmarks.BookmarksViewMvc
+import com.krendel.neusfeet.screens.bookmarks.data.BookmarksDataInteractor
+import com.krendel.neusfeet.screens.bookmarks.data.BookmarksDataInteractorImpl
 import com.krendel.neusfeet.screens.common.repository.RepositoryFactory
+import com.krendel.neusfeet.screens.common.repository.RepositoryFactoryImpl
 import com.krendel.neusfeet.screens.common.repository.bookmark.AddBookmarkUseCase
 import com.krendel.neusfeet.screens.common.repository.bookmark.RemoveBookmarkUseCase
 import com.krendel.neusfeet.screens.common.views.LifecycleViewMvcConfiguration
 import com.krendel.neusfeet.screens.home.HomeFragmentViewModel
 import com.krendel.neusfeet.screens.home.HomeViewMvc
+import com.krendel.neusfeet.screens.home.data.HomeDataInteractor
+import com.krendel.neusfeet.screens.home.data.HomeDataInteractorImpl
 import com.krendel.neusfeet.screens.main.MainActivityViewModel
 import com.krendel.neusfeet.screens.main.MainViewMvc
 import com.krendel.neusfeet.screens.main.MainViewMvcConfiguration
@@ -23,6 +28,8 @@ import com.krendel.neusfeet.screens.preview.PreviewViewConfiguration
 import com.krendel.neusfeet.screens.preview.PreviewViewMvc
 import com.krendel.neusfeet.screens.search.SearchFragmentViewModel
 import com.krendel.neusfeet.screens.search.SearchViewMvc
+import com.krendel.neusfeet.screens.search.data.SearchDataInteractor
+import com.krendel.neusfeet.screens.search.data.SearchDataInteractorImpl
 import com.krendel.neusfeet.screens.settings.SettingsFragmentViewModel
 import com.krendel.neusfeet.screens.settings.SettingsViewMvc
 import io.reactivex.schedulers.Schedulers
@@ -45,7 +52,7 @@ private val REPOSITORY_FACTORY = StringQualifier("REPOSITORY_FACTORY")
 
 val rxJava = module {
 
-    single { SchedulersProviderImpl() as SchedulersProvider }
+    single<SchedulersProvider> { SchedulersProviderImpl() }
 
     single(RETROFIT) {
         val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB
@@ -94,12 +101,33 @@ val databaseModule = module {
 
 val repoModule = module {
 
-    single(REPOSITORY_FACTORY) { RepositoryFactory(get(), get(), get(), get()) }
+    single<RepositoryFactory>(REPOSITORY_FACTORY) { RepositoryFactoryImpl(get(), get(), get(), get()) }
 
     factory { (get(REPOSITORY_FACTORY) as RepositoryFactory).bookmarksRepository() }
 
     single { AddBookmarkUseCase(get(), get()) }
     single { RemoveBookmarkUseCase(get(), get()) }
+
+    single<BookmarksDataInteractor> {
+        BookmarksDataInteractorImpl(
+            get(),
+            get(REPOSITORY_FACTORY)
+        )
+    }
+
+    single<HomeDataInteractor> {
+        HomeDataInteractorImpl(
+            get(),
+            get(REPOSITORY_FACTORY)
+        )
+    }
+
+    single<SearchDataInteractor> {
+        SearchDataInteractorImpl(
+            get(),
+            get(REPOSITORY_FACTORY)
+        )
+    }
 
 }
 
@@ -133,13 +161,13 @@ val viewModelModule = module {
     // fragments
 
     // home fragment
-    viewModel { HomeFragmentViewModel(get(), get(REPOSITORY_FACTORY), get()) }
+    viewModel { HomeFragmentViewModel(get(), get()) }
     // search fragment
-    viewModel { SearchFragmentViewModel(get(), get(REPOSITORY_FACTORY), get()) }
+    viewModel { SearchFragmentViewModel(get(), get()) }
     // article preview fragment
     viewModel { PreviewFragmentViewModel(get(), get()) }
     // bookmarks fragment
-    viewModel { BookmarksFragmentViewModel(get(), get(), get()) }
+    viewModel { BookmarksFragmentViewModel(get(), get()) }
     // settings fragment
     viewModel { SettingsFragmentViewModel(get(REPOSITORY_FACTORY), get()) }
 

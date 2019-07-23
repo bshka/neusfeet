@@ -43,21 +43,21 @@ abstract class AppDataSource<Key, Value>(
      *
      * @return [Disposable] to handle data loading with client lifecycle
      */
-    abstract fun loadInitial(params: LoadInitialParams<Key>, callback: SourceInitialCallback<Key, Value>): Disposable
+    protected abstract fun loadInitial(params: LoadInitialParams<Key>, callback: SourceInitialCallback<Key, Value>): Disposable
 
     /**
      * Load after with custom callback
      *
      * @return [Disposable] to handle data loading with client lifecycle
      */
-    abstract fun loadAfter(params: LoadParams<Key>, callback: SourceLoadCallback<Key, Value>): Disposable
+    protected abstract fun loadAfter(params: LoadParams<Key>, callback: SourceLoadCallback<Key, Value>): Disposable
 
     /**
      * Load before with custom callback
      *
      * @return [Disposable] to handle data loading with client lifecycle
      */
-    abstract fun loadBefore(params: LoadParams<Key>, callback: SourceLoadCallback<Key, Value>): Disposable
+    protected abstract fun loadBefore(params: LoadParams<Key>, callback: SourceLoadCallback<Key, Value>): Disposable
 
     private fun startLoading(isInitial: Boolean) = eventSubject.onNext(
         DataSourceActions.Loading(
