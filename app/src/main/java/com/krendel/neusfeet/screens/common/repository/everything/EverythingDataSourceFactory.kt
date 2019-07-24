@@ -27,6 +27,5 @@ class EverythingDataSourceFactory(
 
 data class EverythingFetchConfiguration(
     var pageSize: Int,
-    var query: String? = null,
-    var sources: String? = null
+    var query: String = ""
 )

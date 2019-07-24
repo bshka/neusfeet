@@ -11,6 +11,8 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
+import kotlin.math.ceil
+import kotlin.math.floor
 
 class TopHeadlinesDataSource(
     private val newsApi: NewsApi,
@@ -100,7 +102,8 @@ class TopHeadlinesDataSource(
                         result.add(it.toArticle())
                     }
                 }
-                val totalPages = (data.totalResults!! / pageSize) + 1
+                val delta = data.totalResults!! % pageSize.toDouble()
+                val totalPages = data.totalResults / pageSize + if (delta > 0) 1 else 0
                 FetchTopHeadlinesResult(
                     totalPages = totalPages,
                     totalResults = data.totalResults,

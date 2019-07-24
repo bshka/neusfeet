@@ -24,8 +24,8 @@ class SourceInitialCallback<Key, Value>(
     }
 
     fun onError(throwable: Throwable) {
-        error(throwable)
         stopLoading()
+        error(throwable)
     }
 
     private fun stopLoading() = eventSubject.onNext(

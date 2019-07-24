@@ -11,6 +11,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
+import kotlin.math.ceil
 
 class EverythingDataSource(
     private val newsApi: NewsApi,
@@ -99,7 +100,8 @@ class EverythingDataSource(
                         result.add(it.toArticle())
                     }
                 }
-                val totalPages = (data.totalResults!! / pageSize) + 1
+                val delta = data.totalResults!! % pageSize.toDouble()
+                val totalPages = data.totalResults / pageSize + if (delta > 0) 1 else 0
                 FetchEverythingResult(
                     totalPages = totalPages,
                     totalResults = data.totalResults,
