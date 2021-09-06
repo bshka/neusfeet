@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,6 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.krendel.neusfeet.ui.screen.bookmarks.BookmarksScreen
+import com.krendel.neusfeet.ui.screen.home.HomeScreen
+import com.krendel.neusfeet.ui.screen.search.SearchScreen
+import com.krendel.neusfeet.ui.screen.settings.SettingsScreen
 import com.krendel.neusfeet.ui.theme.NeusFeetComposeTheme
 
 @Composable
@@ -44,16 +47,16 @@ fun AppNavHost(modifier: Modifier = Modifier, navController: NavHostController) 
         startDestination = Screen.HOME.route
     ) {
         composable(Screen.HOME.route) {
-            Text(text = "HOME")
+            HomeScreen()
         }
         composable(Screen.SEARCH.route) {
-            Text(text = "SEARCH")
+            SearchScreen()
         }
         composable(Screen.BOOKMARKS.route) {
-            Text(text = "BOOKMARKS")
+            BookmarksScreen()
         }
         composable(Screen.SETTINGS.route) {
-            Text(text = "SETTINGS")
+            SettingsScreen()
         }
     }
 }
