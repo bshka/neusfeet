@@ -14,7 +14,7 @@ fun SearchScreen() {
 
 @Preview
 @Composable
-fun HomeScreenPreview() {
+fun SearchScreenPreview() {
     NeusFeetComposeTheme {
         // A surface container using the 'background' color from the theme
         Surface(color = MaterialTheme.colors.background) {

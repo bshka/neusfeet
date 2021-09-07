@@ -14,7 +14,7 @@ fun BookmarksScreen() {
 
 @Preview
 @Composable
-fun HomeScreenPreview() {
+fun BookmarksScreenPreview() {
     NeusFeetComposeTheme {
         // A surface container using the 'background' color from the theme
         Surface(color = MaterialTheme.colors.background) {
